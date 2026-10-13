@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-delegator-info-list-request-schema.json",
+  "title": "DelegatorInfoListRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoListRequest",
+  "type": "object",
+  "required": [
+    "network"
+  ],
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "The network on which the queried stake accounts have been created . Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "participant": {
+      "type": "string",
+      "description": "The participant name registered on the staking platform from which stake accounts need to be retrieved."
+    },
+    "account": {
+      "type": "string",
+      "description": "The account name registered on the staking platform from which stake accounts need to be retrieved."
+    },
+    "status": {
+      "type": "array",
+      "description": "The status of the stake accounts that need to be retrieved. Results will be returned in the order of the statuses sent in the request. Supported values;\r\n- ACTIVE\r\n- INACTIVE\r\n- ACTIVATING\r\n- DEACTIVATING",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "INACTIVE",
+          "ACTIVATING",
+          "DEACTIVATING"
+        ]
+      }
+    },
+    "stake_accounts": {
+      "type": "array",
+      "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed.",
+      "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed."
+      }
+    }
+  }
+}

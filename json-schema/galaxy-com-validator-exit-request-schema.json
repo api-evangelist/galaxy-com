@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-validator-exit-request-schema.json",
+  "title": "Validator Exit Request",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorExitRequest",
+  "type": "object",
+  "required": [
+    "client_req_id",
+    "network",
+    "type"
+  ],
+  "properties": {
+    "client_req_id": {
+      "type": "string",
+      "description": "A unique identifier generated and sent by the client for the exit request. Refer Client Request Identifier for further details."
+    },
+    "network": {
+      "type": "string",
+      "description": "The network on which validators were created. Supported values are;\r\n- mainnet\r\n- hoodi",
+      "enum": [
+        "mainnet",
+        "hoodi"
+      ]
+    },
+    "type": {
+      "type": "integer",
+      "description": "Indicates the type of attribute used to identify the validators to exit. The possible values are,\n- 1 (pubkey)\n- 2 (validator_index)\n- 3 (withdrawal_address)",
+      "format": "int32",
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "pubkeys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "List of validator public keys to be exited. \nThis is required if the exit type is 1. \nA maximum of 250 public keys can be specified."
+      }
+    },
+    "validator_indexes": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "description": "The list of validator indexes to be exited. \nRequired if exit type is 2. \nA maximum of 250 validator indexes can be specified.",
+        "format": "int32"
+      }
+    },
+    "withdrawal_address": {
+      "type": "string",
+      "description": "The withdrawal address of the validators that should be exited.\nRequired if exit type is 3"
+    },
+    "validator_count": {
+      "type": "integer",
+      "description": "Required if exit type is 3. \nThe Max count should be 250.",
+      "format": "int32"
+    }
+  }
+}

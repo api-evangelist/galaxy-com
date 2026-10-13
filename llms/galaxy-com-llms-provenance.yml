@@ -1,0 +1,6 @@
+generated: '2026-10-14'
+method: probed
+generator: harvest-llms.py
+source: https://docs.staking.galaxy.com/llms.txt
+bytes: 3020
+note: saved verbatim; the provider's own document

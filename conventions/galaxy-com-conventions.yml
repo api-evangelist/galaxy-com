@@ -1,0 +1,44 @@
+name: Galaxy Staking API Conventions
+generated: '2026-10-14'
+method: searched
+source: https://docs.staking.galaxy.com/ethereum/client-request-identifier
+authentication:
+  style: X-API-KEY header plus a per-request RS256 JWT bearer token signed with a client RSA4096 key (exp must be less than iat + 30 seconds)
+  docs: https://docs.staking.galaxy.com/authentication-and-authorization
+idempotency:
+  coverage: partial
+  mechanism: client_req_id field in the request payload (body field, not a header)
+  scope:
+  - validators
+  - exit
+  - pre-signed
+  - consolidate
+  - el-triggerable-exit
+  - el-triggerable-withdrawal
+  - topup
+  - update-fee-recipient
+  behaviour: Re-invoking with the same client_req_id returns the undispatched response (200) if processing completed but was not delivered; returns 400 "Duplicate client request; the request has already been served." when already served.
+  docs: https://docs.staking.galaxy.com/ethereum/client-request-identifier
+  note: Scope is the Ethereum write operations whose request schema carries client_req_id; the Solana schemas do not carry it.
+versioning:
+  style: URL path prefix /v1/
+environments:
+- production
+- pre-production (separately documented section of the same docs site)
+base_url:
+  published: false
+  note: The OpenAPI fragments embedded in the docs declare only http://localhost ("Generated server url"); the docs name no production host.
+reversibility:
+  ethereum:
+  - action: validators (provision/stake)
+    reversal: exit / el-triggerable-exit then withdrawals
+    status: documented
+    window: null
+    note: Exiting a validator is the documented way to unwind a stake; no time window is stated.
+  solana:
+  - action: delegate
+    reversal: undelegate then withdraw
+    status: documented
+    window: null
+errors: errors/galaxy-com-error-codes.yml
+rate_limits: rate-limits/galaxy-com-rate-limits.yml

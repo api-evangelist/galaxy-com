@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-delegator-rewards-info-response-schema.json",
+  "title": "DelegatorRewardsInfoResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorRewardsInfoResponse",
+  "type": "object",
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "Network specified in the request.",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "start": {
+      "type": "string",
+      "description": "Start epoch or start date specified in the request."
+    },
+    "end": {
+      "type": "string",
+      "description": "End epoch or end date specified in the request."
+    },
+    "page": {
+      "type": "integer",
+      "description": "The current page number sent in the request.",
+      "format": "int32"
+    },
+    "total": {
+      "type": "integer",
+      "description": "The total number of records resulted for the input criteria.",
+      "format": "int64"
+    },
+    "data": {
+      "type": "array",
+      "description": "An array that contains stake account rewards.",
+      "items": {
+        "$ref": "#/$defs/DelegatorReward"
+      }
+    }
+  },
+  "$defs": {
+    "AccumulatedReward": {
+      "type": "object",
+      "properties": {
+        "accumulated_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "Accumulated rewards in SOL between the start and end specified in the request. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+        },
+        "accumulated_lamports": {
+          "type": "integer",
+          "description": "Accumulated rewards in lamports between the start and end specified in the request.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of rewards.",
+          "enum": [
+            "PROTOCOL",
+            "MEV",
+            "BLOCK",
+            "NET_BLOCK"
+          ]
+        }
+      }
+    },
+    "DelegatorReward": {
+      "type": "object",
+      "properties": {
+        "stake_account": {
+          "type": "string",
+          "description": "The stake_account that received the rewards."
+        },
+        "validator_address": {
+          "type": "string",
+          "description": "Address of the validator that distributed the rewards (the validator the delegator is attached to)."
+        },
+        "total_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "Total rewards the delegator earned from inception in SOL. Values will be displayed up to 9 decimal places\n\nNote: Block rewards will not be available from delegator inception, therefore this field will not consider block rewards. Only inflation rewards and MEV rewards will be considered.\n"
+        },
+        "total_lamports": {
+          "type": "integer",
+          "description": "Total rewards the delegator earned from inception in lamports.\n\nNote : Similar to \"total_sol\" this field will not consider block rewards\n"
+        },
+        "apy": {
+          "type": "number",
+          "format": "double",
+          "description": "The Annualized Percentage Yield of the stake account. This value is calculated considering net inflation and net MEV rewards earned during the last 10 completed epochs."
+        },
+        "block_rewards_apy": {
+          "type": "number",
+          "format": "double",
+          "description": "The Annualized Percentage Yield on block rewards earned by the stake account. This value is calculated considering net block rewards earned during the last 10 completed epochs."
+        },
+        "total_apy": {
+          "type": "number",
+          "format": "double",
+          "description": "The total Annualized Percentage Yield on all rewards attributable to the stake account in the last 10 epochs, after commissions and rebates."
+        },
+        "total_accumulated_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "Total rewards the delegator has earned for the query criteria in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+        },
+        "total_accumulated_lamports": {
+          "type": "integer",
+          "description": "Total rewards the delegator has earned for the query criteria in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+        },
+        "accumulated_gross_block_rewards_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "The total gross block rewards earned by the stake account for the query criteria in SOL.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+        },
+        "accumulated_gross_block_rewards_lamports": {
+          "type": "integer",
+          "description": "The total gross block rewards earned by the stake account for the query criteria in lamports.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+        },
+        "accumulated_net_block_rewards_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "The net block rewards earned by the stake account for the query criteria in SOL, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+        },
+        "accumulated_net_block_rewards_lamports": {
+          "type": "integer",
+          "description": "The net block rewards earned by the stake account for the query criteria in lamports, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+        },
+        "accumulated_rewards": {
+          "type": "array",
+          "description": "Protocol, MEV, and block rewards for the given delegator and query criteria. A new rewards type \"NET_BLOCK\" has been introduced.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will be set to 0.\n",
+          "items": {
+            "$ref": "#/$defs/AccumulatedReward"
+          }
+        },
+        "rewards_breakdown": {
+          "type": "array",
+          "description": "Per-epoch (or period) rewards breakdown.",
+          "items": {
+            "$ref": "#/$defs/RewardBreakdown"
+          }
+        }
+      },
+      "required": [
+        "stake_account",
+        "validator_address"
+      ]
+    },
+    "RewardBreakdown": {
+      "type": "object",
+      "description": "Rewards for a given epoch/period.",
+      "properties": {
+        "epoch": {
+          "type": "integer",
+          "description": "The epoch corresponding to the rewards. This is applicable only if the rollup_type is 1"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "If the rollup_type is 1, it should specify the timestamp corresponding to the end of the epoch."
+        },
+        "balance": {
+          "type": "number",
+          "format": "double",
+          "description": "The balance of the account after rewards have been added."
+        },
+        "total_epoch_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "Total rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+        },
+        "total_epoch_lamports": {
+          "type": "integer",
+          "description": "Total rewards accumulated during the period in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+        },
+        "total_epoch_gross_block_rewards_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "The gross block rewards earned by the stake account for the epoch, in SOL."
+        },
+        "total_epoch_gross_block_rewards_lamports": {
+          "type": "integer",
+          "description": "The gross block rewards earned by the stake account for the epoch, in lamports."
+        },
+        "total_epoch_net_block_rewards_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "The net block rewards earned by the stake account for the epoch, in SOL, net of the staking platform commissions."
+        },
+        "total_epoch_net_block_rewards_lamports": {
+          "type": "integer",
+          "description": "The net block rewards earned by the stake account for the epoch, in lamports, net of the staking platform commissions."
+        },
+        "rewards": {
+          "type": "array",
+          "description": "An array that contains protocol, mev, and block rewards corresponding to the given epoch. A new rewards type \"NET_BLOCK\" has been introduced.",
+          "items": {
+            "$ref": "#/$defs/RewardItem"
+          }
+        }
+      },
+      "required": [
+        "rewards"
+      ]
+    },
+    "RewardItem": {
+      "type": "object",
+      "properties": {
+        "rewards_sol": {
+          "type": "number",
+          "format": "double",
+          "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+        },
+        "rewards_lamports": {
+          "type": "integer",
+          "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of rewards.",
+          "enum": [
+            "PROTOCOL",
+            "MEV",
+            "BLOCK",
+            "NET_BLOCK"
+          ]
+        }
+      }
+    }
+  }
+}

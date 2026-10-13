@@ -1,0 +1,24 @@
+generated: '2026-10-14'
+method: derived
+source: openapi/galaxy-com-ethereum-staking-openapi.yml, openapi/galaxy-com-solana-staking-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: AuthorizationToken
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/galaxy-com-ethereum-staking-openapi.yml
+  - openapi/galaxy-com-solana-staking-openapi.yml
+- name: APIKey
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  sources:
+  - openapi/galaxy-com-ethereum-staking-openapi.yml
+  - openapi/galaxy-com-solana-staking-openapi.yml

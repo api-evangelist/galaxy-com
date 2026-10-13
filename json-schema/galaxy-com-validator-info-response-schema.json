@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-validator-info-response-schema.json",
+  "title": "Validator Info",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorInfoResponse",
+  "type": "object",
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "The network on which validators were created.",
+      "enum": [
+        "mainnet",
+        "hoodi"
+      ]
+    },
+    "last_monitored_epoch": {
+      "type": "integer",
+      "description": "The most recent epoch successfully monitored for the validator, regardless of whether a validator record was persisted. Not applicable from staking initiation until the validator becomes active unless an epoch record exists for the last monitored epoch. Epoch records are created only when there is a balance, status, or reward update for that epoch.",
+      "format": "int32"
+    },
+    "epoch": {
+      "type": "integer",
+      "description": "The specific blockchain epoch to which the returned validator details correspond.",
+      "format": "int32"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the validator.",
+      "enum": [
+        "STAKING_INITIATED",
+        "PENDING_DEPOSIT",
+        "DEPOSITED",
+        "DEPOSIT_FAILED",
+        "PENDING_QUEUED",
+        "ACTIVE",
+        "SLASHING",
+        "SLASHED",
+        "EXIT_INITIATED",
+        "EXITING",
+        "EXITED",
+        "WITHDRAWABLE",
+        "WITHDRAWN"
+      ]
+    },
+    "pubkey": {
+      "type": "string",
+      "description": "Public key of the validator."
+    },
+    "region": {
+      "type": "string",
+      "description": "The geographic region where the validator will be created.",
+      "enum": [
+        "US",
+        "EU",
+        "KR"
+      ]
+    },
+    "validator_index": {
+      "type": "integer",
+      "description": "Validator index.",
+      "format": "int32"
+    },
+    "withdrawal_credential_type": {
+      "type": "string",
+      "description": "Withdrawal credential type of the validator. Applicable values are:\r\n- 0x00\r\n- 0x01\r\n- 0x02"
+    },
+    "withdrawal_address": {
+      "type": "string",
+      "description": "Withdrawal address of the corresponding validator. "
+    },
+    "fee_recipient_address": {
+      "type": "string",
+      "description": "The fee recipient address belongs to the validator."
+    },
+    "estimated_activation_at": {
+      "type": "string",
+      "description": "Estimate of when the validator will become active and start earning rewards. This will be populated since the validator is transitioned to DEPOSITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+    },
+    "estimated_exit_at": {
+      "type": "string",
+      "description": "Estimate of when the validator will exit and stop earning rewards. This will be populated since the validator is transitioned to EXIT_INITIATED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+    },
+    "estimated_withdrawal_at": {
+      "type": "string",
+      "description": "Estimate of when the validator’s principal will become withdrawable. This will be populated since the validator is transitioned to EXITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+    },
+    "balance_in_wei": {
+      "type": "string",
+      "description": "Actual balance of the validator in WEI."
+    },
+    "balance_in_eth": {
+      "type": "number",
+      "description": "Actual balance of the validator in ETH.",
+      "format": "double"
+    },
+    "status_history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/StatusHistoryData"
+      }
+    },
+    "voluntary_exit": {
+      "$ref": "#/$defs/VoluntaryExitData"
+    },
+    "presigned_exit": {
+      "$ref": "#/$defs/PresignedExitData"
+    },
+    "staking_request_info": {
+      "$ref": "#/$defs/StakingRequestInfo"
+    }
+  },
+  "$defs": {
+    "PresignedExitData": {
+      "title": "Pre-signed Exit Data",
+      "type": "object",
+      "properties": {
+        "fork_version": {
+          "type": "string",
+          "description": "The genesis fork version used when generating the pre-signed exit message."
+        },
+        "encrypted_exit_message": {
+          "type": "string",
+          "description": "The encrypted pre-signed exit message. The client can decrypt this message using their private key."
+        }
+      },
+      "description": "This JSON object will be populated if the include_presigned_exit query parameter is set to “true” and the validator is in active status for at-least 256 epochs. Otherwise, it will be set to null."
+    },
+    "StakingRequestInfo": {
+      "title": "Staking Request Data",
+      "type": "object",
+      "properties": {
+        "staking_ref_id": {
+          "type": "string",
+          "description": "A unique reference ID generated by the staking infrastructure for the staking request."
+        },
+        "provisioned_at": {
+          "type": "string",
+          "description": "The date and time when the validator was provisioned by the staking infrastructure. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+        }
+      },
+      "description": "JSON object that contains the staking request id and validators provisioned date and time. This should be set to ‘null’ for externally provisioned validators."
+    },
+    "StatusHistoryData": {
+      "title": "Status History Data",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Status of the validator.",
+          "enum": [
+            "STAKING_INITIATED",
+            "PENDING_DEPOSIT",
+            "DEPOSITED",
+            "DEPOSIT_FAILED",
+            "PENDING_QUEUED",
+            "ACTIVE",
+            "SLASHING",
+            "SLASHED",
+            "EXIT_INITIATED",
+            "EXITING",
+            "EXITED",
+            "WITHDRAWABLE",
+            "WITHDRAWN"
+          ]
+        },
+        "transitioned_at": {
+          "type": "string",
+          "description": "The date and time the validator transitioned into the given status. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+        }
+      },
+      "description": "An array that contains the state transition of the validator. "
+    },
+    "VoluntaryExitData": {
+      "title": "Voluntary Exit Data",
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "description": "Unique request id sent by the client when requesting the voluntary exit."
+        },
+        "requested_at": {
+          "type": "string",
+          "description": "The date and time the exit request was received. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+        },
+        "submitted_at": {
+          "type": "string",
+          "description": "The date and time the validator’s exit message was broadcasted to the beacon node. It will be in the format of “YYYY-MM-DD HH:mm:ss”."
+        }
+      },
+      "description": "JSON object that contains on demand exit related information if the validator has initiated the voluntary exit. Otherwise, it will be null."
+    }
+  }
+}

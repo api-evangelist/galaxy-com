@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-delegator-info-list-response-schema.json",
+  "title": "DelegatorInfoListResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoListResponse",
+  "type": "object",
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "page": {
+      "type": "integer",
+      "description": "The current page number sent in the request.",
+      "format": "int32"
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of stake accounts being sent in the API response",
+      "format": "int64"
+    },
+    "data": {
+      "type": "object",
+      "description": "An array that contains the details about stake accounts.",
+      "properties": {
+        "stake_account": {
+          "type": "string",
+          "description": "\t\nThe public key of the stake account"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the delegator"
+        },
+        "balance_in_sol": {
+          "type": "number",
+          "description": "The current balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+          "format": "double"
+        },
+        "balance_in_lamports": {
+          "type": "number",
+          "description": "The balance in the stake account in Lamports",
+          "format": "double"
+        },
+        "validator_info": {
+          "$ref": "#/$defs/ValidatorInfo"
+        },
+        "provision_info": {
+          "$ref": "#/$defs/ProvisionInfo"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ProvisionInfo": {
+      "type": "object",
+      "description": "JSON object that contains the registration details of the delegator.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The reference number issued when successfully onboarding the stake account"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+        }
+      }
+    },
+    "ValidatorInfo": {
+      "type": "object",
+      "description": "JSON object that represents the validator for which the given stake account is attached to.",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "The public key of the validator"
+        }
+      }
+    }
+  }
+}

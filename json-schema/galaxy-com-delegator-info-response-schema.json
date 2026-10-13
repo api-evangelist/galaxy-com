@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-delegator-info-response-schema.json",
+  "title": "DelegatorInfoResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoResponse",
+  "required": [
+    "network"
+  ],
+  "type": "object",
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "The network on which validators should be created. Supported values.",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "stake_account": {
+      "type": "string",
+      "description": "\t\nThe public key of the stake account"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the delegator"
+    },
+    "balance_in_lamports": {
+      "type": "number",
+      "description": "The balance in the stake account in Lamports",
+      "format": "double"
+    },
+    "balance_in_sol": {
+      "type": "number",
+      "description": "The balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+      "format": "double"
+    },
+    "validator_info": {
+      "$ref": "#/$defs/ValidatorInfo"
+    },
+    "provision_info": {
+      "$ref": "#/$defs/ProvisionInfo"
+    }
+  },
+  "$defs": {
+    "ProvisionInfo": {
+      "type": "object",
+      "description": "JSON object that contains the registration details of the delegator.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The reference number issued when successfully onboarding the stake account"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+        }
+      }
+    },
+    "ValidatorInfo": {
+      "type": "object",
+      "description": "JSON object that represents the validator for which the given stake account is attached to.",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "The public key of the validator"
+        }
+      }
+    }
+  }
+}

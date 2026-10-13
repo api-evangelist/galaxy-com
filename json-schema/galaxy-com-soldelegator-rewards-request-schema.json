@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-soldelegator-rewards-request-schema.json",
+  "title": "SOLDelegatorRewardsRequest",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/SOLDelegatorRewardsRequest",
+  "type": "object",
+  "required": [
+    "network",
+    "rollup_type",
+    "start",
+    "end",
+    "stake_accounts"
+  ],
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "The network on which validators should be created. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "rollup_type": {
+      "type": "integer",
+      "description": "Denotes the granularity of rewards breakdown. THe applicable values are;\n- 1 (epoch)\n- 2 (date)",
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "start": {
+      "type": "string",
+      "description": "It specifies the start epoch if the type is 1, or the start date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+    },
+    "end": {
+      "type": "string",
+      "description": "It specifies the end epoch if the type is 1, or the end date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+    },
+    "stake_accounts": {
+      "type": "array",
+      "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed.",
+      "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed."
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+# Galaxy Staking
+
+## production
+
+- [Home](https://docs.staking.galaxy.com/home.md)
+- [Authentication and Authorization](https://docs.staking.galaxy.com/authentication-and-authorization.md)
+- [API Key](https://docs.staking.galaxy.com/authentication-and-authorization/api-key.md)
+- [Authorization Token](https://docs.staking.galaxy.com/authentication-and-authorization/authorization-token.md)
+- [Client Request Identifier](https://docs.staking.galaxy.com/ethereum/client-request-identifier.md)
+- [Validator Statuses](https://docs.staking.galaxy.com/ethereum/validator-statuses.md)
+- [Ethereum](https://docs.staking.galaxy.com/ethereum/ethereum.md)
+- [Models](https://docs.staking.galaxy.com/ethereum/models.md)
+- [Solana](https://docs.staking.galaxy.com/solana/solana.md)
+- [Models](https://docs.staking.galaxy.com/solana/models.md)
+
+## pre-production&#x20;
+
+- [Home](https://docs.staking.galaxy.com/pre-production/home.md)
+- [Authentication and Authorization](https://docs.staking.galaxy.com/pre-production/authentication-and-authorization.md)
+- [API Key](https://docs.staking.galaxy.com/pre-production/authentication-and-authorization/api-key.md)
+- [Authorization Token](https://docs.staking.galaxy.com/pre-production/authentication-and-authorization/authorization-token.md)
+- [Client Request Identifier](https://docs.staking.galaxy.com/pre-production/ethereum/client-request-identifier.md)
+- [Validator Statuses](https://docs.staking.galaxy.com/pre-production/ethereum/validator-statuses.md)
+- [Ethereum](https://docs.staking.galaxy.com/pre-production/ethereum/ethereum.md)
+- [Models](https://docs.staking.galaxy.com/pre-production/ethereum/models.md)
+- [Solana](https://docs.staking.galaxy.com/pre-production/solana/solana.md)
+- [Models](https://docs.staking.galaxy.com/pre-production/solana/models.md)
+
+
+---
+
+# Agent Instructions
+This documentation is published with GitBook. GitBook is the documentation platform designed so that both humans and AI agents can read, navigate, and reason over technical content effectively. Learn more at gitbook.com.
+
+## Querying This Documentation
+This site has an agentic ask interface you may use to query the documentation dynamically by asking a question.
+
+Perform an HTTP GET request on the following URL with the `ask` and `goal` query parameters:
+
+```
+GET https://docs.staking.galaxy.com/index.md?ask=<question>&goal=<user_goal>
+```
+
+`ask` is the immediate question: it should be specific, self-contained, and written in natural language.
+`goal` is what the user is ultimately trying to achieve, the reason they need the answer. Sharing it helps GitBook give you a better, more relevant answer. A goal is most helpful when it describes the outcome the user wants rather than restating the question. For example, with `ask=how do I create an API token`, a goal like `automate deployments from our CI pipeline` lets GitBook tailor the answer to that use case.
+
+The response will contain a direct answer to the question and relevant excerpts and sources from the documentation.

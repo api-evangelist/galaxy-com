@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-eth-epoch-level-info-request-schema.json",
+  "title": "Rewards Request",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/EthEpochLevelInfoRequest",
+  "type": "object",
+  "required": [
+    "network",
+    "start",
+    "end",
+    "rollup_type"
+  ],
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "The network on which validators should be created. Supported values are;\r\n- mainnet\r\n- hoodi",
+      "enum": [
+        "mainnet",
+        "hoodi"
+      ]
+    },
+    "start": {
+      "type": "string",
+      "description": "It specifies the start epoch if the type is 1, or the start date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2"
+    },
+    "end": {
+      "type": "string",
+      "description": "It specifies the end epoch if the type is 1, or the end date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2"
+    },
+    "rollup_type": {
+      "type": "string",
+      "description": "Denotes how the requested rewards range is specified. Applicable values are:\r\n-1 (epoch)\r\n- 2 (date)",
+      "enum": [
+        "1",
+        "2"
+      ]
+    },
+    "pubkeys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "List of validator public keys to fetch the rewards breakdown. A maximum of 50 entries are allowed."
+      }
+    },
+    "cl_rewards_breakdown": {
+      "type": "boolean",
+      "default": false,
+      "description": "Denotes whether the response should include a detailed consensus-layer (CL) rewards and penalties breakdown. The applicable values are: \r\n- true\r\n- false (Default)"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/galaxy-com-ethereum-staking-openapi.yml
+- openapi/galaxy-com-solana-staking-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: InternalServerStakingErrorListResponse
+coverage:
+  operations: 30
+  statuses_declared: 2
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad Request
+  operations: 30
+  media_types:
+  - application/json
+  schema: StakingErrorListResponse
+- status: 500
+  title: Internal Server Error
+  description: Internal Server Error
+  operations: 30
+  media_types:
+  - application/json
+  schema: InternalServerStakingErrorListResponse

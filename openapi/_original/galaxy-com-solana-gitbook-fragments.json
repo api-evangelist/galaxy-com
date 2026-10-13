@@ -1,0 +1,4137 @@
+[
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/stake-account": {
+    "post": {
+     "summary": "Stake Account Creation",
+     "description": "This endpoint allows clients to initiate staking by creating and funding a new stake account on the Solana blockchain.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "network",
+          "funding_pubkey",
+          "amount"
+         ],
+         "properties": {
+          "network": {
+           "type": "string",
+           "description": "The network on which the stake account should be created. Supported values;\r\n-mainnet\r\n-testnet\r\n-devnet",
+           "enum": [
+            "mainnet",
+            "testnet",
+            "devnet"
+           ]
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform that corresponds to the client's customer. \r\nIf not provided requests will be assigned to a default participant connected to the API key."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform that corresponds to the client's customer. \r\nIf not provided requests will be assigned to a default account linked to the participant."
+          },
+          "funding_pubkey": {
+           "type": "string",
+           "description": "The Solana account address that will be funding the stake account."
+          },
+          "amount": {
+           "type": "number",
+           "description": "The amount of SOL that should be sent to the stake account. The minimum stake amount is 0.01 SOL."
+          },
+          "stake_authority_pubkey": {
+           "type": "string",
+           "description": "The Solana account address that should sign all stake account related actions (Delegation, Undelegation, Split and Merge). If not provided will default to the \"funding_pubkey\"."
+          },
+          "withdraw_authority_pubkey": {
+           "type": "string",
+           "description": "The Solana account address that should sign withdrawal transactions. If not provided will default to the \"funding_pubkey\"."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The public key of the newly created stake account."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "The funding account that has to sign the transaction.",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform.\r\nTimes will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/delegate": {
+    "post": {
+     "summary": "Delegation",
+     "description": "This end point supports the delegation of stake accounts under a selected validator. Clients can delegate stake accounts that are currently onboarded onto the staking platform as well as stake accounts that do not have a corresponding position on the staking platform i.e. stake accounts created elsewhere.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey",
+          "validator_pubkey"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The stake account that should be delegated."
+          },
+          "validator_pubkey": {
+           "type": "string",
+           "description": "The validator address under which the stake account should be delegated."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "The Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the Stake Authority of the stake account."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The stake account that was sent in the delegation request."
+           },
+           "validator_pubkey": {
+            "type": "string",
+            "description": "The validator address that was sent in the delegation request."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "An array of the Solana account addresses that should sign the transaction. A delegation request should be signed by the Stake Authority of the stake account and the \"fee_payer\" (If applicable).",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/undelegate": {
+    "post": {
+     "summary": "Undelegation",
+     "description": "Clients can use the undelegation endpoint to undelegate an existing delegation. This endpoint allows clients to undelegate stake accounts that are currently onboarded onto the staking platform as well as stake accounts that do not have a corresponding position on the staking platform ",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The stake account that should be undelegated."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "TThe Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the Stake Authority of the stake account."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The stake account that was sent in the undelegation request."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "An array of the Solana account addresses that should sign the transaction. An undelegation request should be signed by the Stake Authority of the stake account and the \"fee_payer\" (If applicable).",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/withdraw": {
+    "post": {
+     "summary": "Withdrawals",
+     "description": "Clients can use this endpoint to withdraw undelegated SOL from both onboarded stake accounts and those without a corresponding position on the staking platform. Withdrawals can be made from a stake account to a Solana account (wallet) or between stake accounts.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey",
+          "amount"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The stake account from which SOL should be withdrawn."
+          },
+          "recipient_pubkey": {
+           "type": "string",
+           "description": "The stake account or Solana account (wallet) to which the withdrawn SOL will be transferred. If not provided the withdrawal will be done to the funding account of the stake account."
+          },
+          "amount": {
+           "type": "number",
+           "description": "The amount of SOL that should be withdrawn. The amount should be sent without trailing zeros."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "The Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the Withdraw Authority of the stake account."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The stake account that was sent in the withdrawal request."
+           },
+           "recipient_pubkey": {
+            "type": "string",
+            "description": "The recipient address that was sent in the withdrawal request."
+           },
+           "amount": {
+            "type": "number",
+            "description": "The amount sent in the withdrawal request."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "An array of the Solana account addresses that should sign the transaction. A withdrawal request should be signed by the Withdraw Authority of the stake account and the \"fee_payer\" (If applicable).",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/split": {
+    "post": {
+     "summary": "Split",
+     "description": "Clients can use this endpoint to split the balance of a stake account into a new stake account. It supports splitting both onboarded stake accounts and those without a corresponding position on the staking platform.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey",
+          "amount"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The stake account that should be split."
+          },
+          "amount": {
+           "type": "number",
+           "description": "The amount of SOL that should be split from the existing stake account to the newly created stake account."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "The Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the Stake Authority of the stake account."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "source_account_pubkey": {
+            "type": "string",
+            "description": "The existing stake account that was sent in the split request"
+           },
+           "destination_account_pubkey": {
+            "type": "string",
+            "description": "The newly created stake account to which SOL will be transferred"
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "An array of the Solana account addresses that should sign the transaction. A split request should be signed by the Stake Authority of the stake account and the \"fee_payer\" (If applicable)",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format"
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/merge": {
+    "post": {
+     "summary": "Merge",
+     "description": "The Staking API offers an endpoint to merge two stake accounts that share the same stake and withdrawal authorities into a single stake account. This endpoint allows clients to merge stake accounts that are currently onboarded onto the staking platform as well as merge stake accounts that do not have a corresponding position on the staking platform.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "source_account_pubkey",
+          "destination_account_pubkey"
+         ],
+         "properties": {
+          "source_account_pubkey": {
+           "type": "string",
+           "description": "The stake account that should be merged into the destination account."
+          },
+          "destination_account_pubkey": {
+           "type": "string",
+           "description": "The stake account that the source account will be merged into."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "The Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the Stake Authority of the stake account."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position/s will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position/s will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "source_account_pubkey": {
+            "type": "string",
+            "description": "The source stake account that was sent in the merge request."
+           },
+           "destination_account_pubkey": {
+            "type": "string",
+            "description": "The destination stake account that was sent in the merge request."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "description": "An array of the Solana account addresses that should sign the transaction. A merge request should be signed by the Stake Authority of the stake account and the \"fee_payer\" (If applicable).",
+            "items": {
+             "type": "string"
+            }
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/transfer": {
+    "post": {
+     "summary": "Transfer",
+     "description": "Clients can use this endpoint to transfer SOL from a Solana account (wallet) to a stake account. This endpoint allows clients to transfer SOL to stake accounts that have been onboarded onto the staking platform as well as to stake accounts that do not have a corresponding position on the staking platform.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "source_account_pubkey",
+          "destination_account_pubkey",
+          "amount"
+         ],
+         "properties": {
+          "source_account_pubkey": {
+           "type": "string",
+           "description": "The Solana account (wallet) from which SOL will be transferred out of."
+          },
+          "destination_account_pubkey": {
+           "type": "string",
+           "description": "The stake account into which SOL will be transferred."
+          },
+          "amount": {
+           "type": "number",
+           "description": "The amount of SOL to be transferred to the stake account."
+          },
+          "fee_payer": {
+           "type": "string",
+           "description": "The Solana account address that should pay the fees related to the transaction. If not provided fees should be paid by the 'source_account_pubkey'."
+          },
+          "participant": {
+           "type": "string",
+           "description": "The participant name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position/s will be created under a default participant."
+          },
+          "account": {
+           "type": "string",
+           "description": "The account name registered on the staking platform under which the stake account should be created if it has not currently been onboarded onto the staking platform. If not provided the position/s will be created under a default account."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "from_account_pubkey": {
+            "type": "string",
+            "description": "The Solana account (wallet) from which SOL will be transferred."
+           },
+           "to_account_pubkey": {
+            "type": "string",
+            "description": "The destination stake account to which SOL will be transferred."
+           },
+           "unsigned_tx": {
+            "type": "string",
+            "description": "The Hexadecimal encoded serialized unsigned transaction which should be signed by the relevant parties specified in the signers field."
+           },
+           "signers": {
+            "type": "array",
+            "items": {
+             "type": "string"
+            },
+            "description": "An array of the Solana account addresses that should sign the transaction. A transfer request should be signed by the private key of the source account and the \"fee_payer\" (If applicable)."
+           },
+           "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time at which the request was received by the staking platform. Times will be shown in the \"YYYY-MM-DD HH:mm:ss\" format."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/signed-transaction": {
+    "post": {
+     "summary": "Submit Signed Transactions",
+     "description": "Clients can submit their signed transactions to the staking platform via this endpoint. Upon receiving a signed transaction the staking platform will broadcast it to the Solana blockchain for execution.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey",
+          "action",
+          "tx_payload"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The address for which the signed transaction is being sent."
+          },
+          "action": {
+           "type": "string",
+           "description": "The action for which the payload is applicable. Supported values are;\r\n- stake_account_creation \r\n- delegate \r\n- undelegate\r\n- withdraw\r\n- split\r\n- merge\r\n- transfer",
+           "enum": [
+            "stake_account_creation",
+            "delegate",
+            "undelegate",
+            "withdraw",
+            "split",
+            "merge",
+            "transfer"
+           ]
+          },
+          "tx_payload": {
+           "type": "string",
+           "description": "Hexadecimal encoded serialized signed transaction corresponding to the  unsigned transaction created via respective endpoint."
+          },
+          "destination_account_pubkey": {
+           "type": "string",
+           "description": "The destination address for which the signed transaction is being sent. \r\nWill be required if the action is one of the following - withdraw, split, merge, transfer."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The stake account address in the API request."
+           },
+           "destination_account_pubkey": {
+            "type": "string",
+            "description": "The destination address in the API request."
+           },
+           "action": {
+            "type": "string",
+            "description": "The action sent in the request."
+           },
+           "tx_hash": {
+            "type": "string",
+            "description": "The transaction hash for the broadcasted transaction. The transaction hash will be received after the payload is successfully sent to the Solana blockchain."
+           },
+           "tx_status": {
+            "type": "string",
+            "description": "The status of the transaction. Supported values are;\r\n- signed_tx_received\r\n- signed_tx_sent\r\n- broadcasted\r\n- confirmed\r\n- rejected",
+            "enum": [
+             "signed_tx_received",
+             "signed_tx_sent",
+             "broadcasted",
+             "confirmed",
+             "rejected"
+            ]
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/transaction": {
+    "post": {
+     "summary": "Submit Transaction Hash",
+     "description": "Clients can use this endpoint to submit a transaction hash for a payload independently broadcasted to the blockchain. The staking platform verifies the transaction status and updates the corresponding stake account position accordingly.",
+     "tags": [
+      "Solana"
+     ],
+     "requestBody": {
+      "required": true,
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "required": [
+          "stake_account_pubkey",
+          "action",
+          "tx_hash"
+         ],
+         "properties": {
+          "stake_account_pubkey": {
+           "type": "string",
+           "description": "The address for which the transaction hash is being sent."
+          },
+          "action": {
+           "type": "string",
+           "description": "The action for which the payload is applicable. Supported values are;\r\n- stake_account_creation \r\n- delegate \r\n- undelegate\r\n- withdraw\r\n- split\r\n- merge\r\n- transfer",
+           "enum": [
+            "stake_account_creation",
+            "delegate",
+            "undelegate",
+            "withdraw",
+            "split",
+            "merge",
+            "transfer"
+           ]
+          },
+          "tx_hash": {
+           "type": "string",
+           "description": "The transaction hash which is being submitted to the staking platform."
+          },
+          "destination_account_pubkey": {
+           "type": "string",
+           "description": "The destination address for which the signed transaction is being sent. Will be required if the action is one of the following - withdraw, split, merge, transfer."
+          }
+         }
+        }
+       }
+      }
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "stake_account_pubkey": {
+            "type": "string",
+            "description": "The stake account address in the API request."
+           },
+           "destination_account_pubkey": {
+            "type": "string",
+            "description": "The destination address in the API request."
+           },
+           "action": {
+            "type": "string",
+            "description": "The action sent in the request."
+           },
+           "tx_hash": {
+            "type": "string",
+            "description": "The transaction hash sent in the API request."
+           },
+           "tx_status": {
+            "type": "string",
+            "description": "The status of the transaction.Supported values are;\r\n- confirmed\r\n- rejected",
+            "enum": [
+             "confirmed",
+             "rejected"
+            ]
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "SOLDelegatorRewardsRequest": {
+     "type": "object",
+     "required": [
+      "network",
+      "rollup_type",
+      "start",
+      "end",
+      "stake_accounts"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which validators should be created. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "rollup_type": {
+       "type": "integer",
+       "description": "Denotes the granularity of rewards breakdown. THe applicable values are;\n- 1 (epoch)\n- 2 (date)",
+       "enum": [
+        1,
+        2
+       ]
+      },
+      "start": {
+       "type": "string",
+       "description": "It specifies the start epoch if the type is 1, or the start date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+      },
+      "end": {
+       "type": "string",
+       "description": "It specifies the end epoch if the type is 1, or the end date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+      },
+      "stake_accounts": {
+       "type": "array",
+       "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed.",
+       "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed."
+       }
+      }
+     }
+    },
+    "DelegatorRewardsInfoResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request.",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "start": {
+       "type": "string",
+       "description": "Start epoch or start date specified in the request."
+      },
+      "end": {
+       "type": "string",
+       "description": "End epoch or end date specified in the request."
+      },
+      "page": {
+       "type": "integer",
+       "description": "The current page number sent in the request.",
+       "format": "int32"
+      },
+      "total": {
+       "type": "integer",
+       "description": "The total number of records resulted for the input criteria.",
+       "format": "int64"
+      },
+      "data": {
+       "type": "array",
+       "description": "An array that contains stake account rewards.",
+       "items": {
+        "$ref": "#/components/schemas/DelegatorReward"
+       }
+      }
+     },
+     "title": ""
+    },
+    "DelegatorReward": {
+     "type": "object",
+     "properties": {
+      "stake_account": {
+       "type": "string",
+       "description": "The stake_account that received the rewards."
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "Address of the validator that distributed the rewards (the validator the delegator is attached to)."
+      },
+      "total_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator earned from inception in SOL. Values will be displayed up to 9 decimal places\n\nNote: Block rewards will not be available from delegator inception, therefore this field will not consider block rewards. Only inflation rewards and MEV rewards will be considered.\n"
+      },
+      "total_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator earned from inception in lamports.\n\nNote : Similar to \"total_sol\" this field will not consider block rewards\n"
+      },
+      "apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield of the stake account. This value is calculated considering net inflation and net MEV rewards earned during the last 10 completed epochs."
+      },
+      "block_rewards_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield on block rewards earned by the stake account. This value is calculated considering net block rewards earned during the last 10 completed epochs."
+      },
+      "total_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The total Annualized Percentage Yield on all rewards attributable to the stake account in the last 10 epochs, after commissions and rebates."
+      },
+      "total_accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator has earned for the query criteria in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_accumulated_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator has earned for the query criteria in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "accumulated_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in SOL.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in lamports.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the query criteria in SOL, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the query criteria in lamports, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_rewards": {
+       "type": "array",
+       "description": "Protocol, MEV, and block rewards for the given delegator and query criteria. A new rewards type \"NET_BLOCK\" has been introduced.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will be set to 0.\n",
+       "items": {
+        "$ref": "#/components/schemas/AccumulatedReward"
+       }
+      },
+      "rewards_breakdown": {
+       "type": "array",
+       "description": "Per-epoch (or period) rewards breakdown.",
+       "items": {
+        "$ref": "#/components/schemas/RewardBreakdown"
+       }
+      }
+     },
+     "required": [
+      "stake_account",
+      "validator_address"
+     ]
+    },
+    "AccumulatedReward": {
+     "type": "object",
+     "properties": {
+      "accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Accumulated rewards in SOL between the start and end specified in the request. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "accumulated_lamports": {
+       "type": "integer",
+       "description": "Accumulated rewards in lamports between the start and end specified in the request.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    },
+    "RewardBreakdown": {
+     "type": "object",
+     "description": "Rewards for a given epoch/period.",
+     "properties": {
+      "epoch": {
+       "type": "integer",
+       "description": "The epoch corresponding to the rewards. This is applicable only if the rollup_type is 1"
+      },
+      "timestamp": {
+       "type": "string",
+       "format": "date-time",
+       "description": "If the rollup_type is 1, it should specify the timestamp corresponding to the end of the epoch."
+      },
+      "balance": {
+       "type": "number",
+       "format": "double",
+       "description": "The balance of the account after rewards have been added."
+      },
+      "total_epoch_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_lamports": {
+       "type": "integer",
+       "description": "Total rewards accumulated during the period in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The gross block rewards earned by the stake account for the epoch, in SOL."
+      },
+      "total_epoch_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The gross block rewards earned by the stake account for the epoch, in lamports."
+      },
+      "total_epoch_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the epoch, in SOL, net of the staking platform commissions."
+      },
+      "total_epoch_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the epoch, in lamports, net of the staking platform commissions."
+      },
+      "rewards": {
+       "type": "array",
+       "description": "An array that contains protocol, mev, and block rewards corresponding to the given epoch. A new rewards type \"NET_BLOCK\" has been introduced.",
+       "items": {
+        "$ref": "#/components/schemas/RewardItem"
+       }
+      }
+     },
+     "required": [
+      "rewards"
+     ]
+    },
+    "RewardItem": {
+     "type": "object",
+     "properties": {
+      "rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "rewards_lamports": {
+       "type": "integer",
+       "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    },
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/rewards": {
+    "post": {
+     "tags": [
+      "Solana"
+     ],
+     "summary": "Rewards",
+     "description": "The rewards endpoint returns  rewards accrued by a stake account. This endpoint accepts the filtering by start and end (can be epoch or date), and delegator address (stake account) public keys. This endpoint returns the rewards since stake account inception, accrued rewards in the specified period and epoch-wise rewards breakdown for the specified period.",
+     "operationId": "getSOLDelegatorAccruedRewards",
+     "parameters": [
+      {
+       "name": "X-API-KEY",
+       "in": "header",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "page",
+       "in": "query",
+       "description": "The current page number requested by the client, if not specified, should be defaulted to 1.",
+       "required": false,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "size",
+       "in": "query",
+       "description": "The number of entries per page, if not presented in the request, should be defaulted to the maximum value of 250.",
+       "required": false,
+       "schema": {
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/SOLDelegatorRewardsRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/DelegatorRewardsInfoResponse"
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "DelegatorInfoListRequest": {
+     "type": "object",
+     "required": [
+      "network"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which the queried stake accounts have been created . Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "participant": {
+       "type": "string",
+       "description": "The participant name registered on the staking platform from which stake accounts need to be retrieved."
+      },
+      "account": {
+       "type": "string",
+       "description": "The account name registered on the staking platform from which stake accounts need to be retrieved."
+      },
+      "status": {
+       "type": "array",
+       "description": "The status of the stake accounts that need to be retrieved. Results will be returned in the order of the statuses sent in the request. Supported values;\r\n- ACTIVE\r\n- INACTIVE\r\n- ACTIVATING\r\n- DEACTIVATING",
+       "items": {
+        "type": "string",
+        "enum": [
+         "ACTIVE",
+         "INACTIVE",
+         "ACTIVATING",
+         "DEACTIVATING"
+        ]
+       }
+      },
+      "stake_accounts": {
+       "type": "array",
+       "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed.",
+       "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed."
+       }
+      }
+     }
+    },
+    "DelegatorInfoListResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "page": {
+       "type": "integer",
+       "description": "The current page number sent in the request.",
+       "format": "int32"
+      },
+      "total": {
+       "type": "integer",
+       "description": "Total number of stake accounts being sent in the API response",
+       "format": "int64"
+      },
+      "data": {
+       "type": "object",
+       "description": "An array that contains the details about stake accounts.",
+       "properties": {
+        "stake_account": {
+         "type": "string",
+         "description": "\t\nThe public key of the stake account"
+        },
+        "status": {
+         "type": "string",
+         "description": "Current status of the delegator"
+        },
+        "balance_in_sol": {
+         "type": "number",
+         "description": "The current balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+         "format": "double"
+        },
+        "balance_in_lamports": {
+         "type": "number",
+         "description": "The balance in the stake account in Lamports",
+         "format": "double"
+        },
+        "validator_info": {
+         "$ref": "#/components/schemas/ValidatorInfo"
+        },
+        "provision_info": {
+         "$ref": "#/components/schemas/ProvisionInfo"
+        }
+       }
+      }
+     }
+    },
+    "ValidatorInfo": {
+     "type": "object",
+     "description": "JSON object that represents the validator for which the given stake account is attached to.",
+     "properties": {
+      "address": {
+       "type": "string",
+       "description": "The public key of the validator"
+      }
+     }
+    },
+    "ProvisionInfo": {
+     "type": "object",
+     "description": "JSON object that contains the registration details of the delegator.",
+     "properties": {
+      "id": {
+       "type": "string",
+       "description": "The reference number issued when successfully onboarding the stake account"
+      },
+      "created_at": {
+       "type": "string",
+       "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+      }
+     }
+    },
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators": {
+    "post": {
+     "tags": [
+      "Solana"
+     ],
+     "summary": "Retrieve Multiple Delegators",
+     "description": "The endpoint to retrieve a list of delegators returns the details of the stake accounts monitored by a given client that fit the specified filter criteria in a paginated manner. If no filtration criteria is provided, the endpoint will retrieve a list of all the stake accounts applicable to the client. All timestamp fields in the response are in UTC.",
+     "operationId": "getMultipleDelegators",
+     "parameters": [
+      {
+       "name": "X-API-KEY",
+       "in": "header",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "page",
+       "in": "query",
+       "description": "The current page number requested by the client, if not specified, should be defaulted to 1.",
+       "required": false,
+       "schema": {
+        "type": "string",
+        "default": "1"
+       }
+      },
+      {
+       "name": "size",
+       "in": "query",
+       "description": "The number of entries per page, if not presented in the request, should be defaulted to the maximum value of 250.",
+       "required": false,
+       "schema": {
+        "type": "string",
+        "default": "250"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DelegatorInfoListRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/DelegatorInfoListResponse"
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "DelegatorInfoResponse": {
+     "required": [
+      "network"
+     ],
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which validators should be created. Supported values.",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "stake_account": {
+       "type": "string",
+       "description": "\t\nThe public key of the stake account"
+      },
+      "status": {
+       "type": "string",
+       "description": "Current status of the delegator"
+      },
+      "balance_in_lamports": {
+       "type": "number",
+       "description": "The balance in the stake account in Lamports",
+       "format": "double"
+      },
+      "balance_in_sol": {
+       "type": "number",
+       "description": "The balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+       "format": "double"
+      },
+      "validator_info": {
+       "$ref": "#/components/schemas/ValidatorInfo"
+      },
+      "provision_info": {
+       "$ref": "#/components/schemas/ProvisionInfo"
+      }
+     }
+    },
+    "ValidatorInfo": {
+     "type": "object",
+     "description": "JSON object that represents the validator for which the given stake account is attached to.",
+     "properties": {
+      "address": {
+       "type": "string",
+       "description": "The public key of the validator"
+      }
+     }
+    },
+    "ProvisionInfo": {
+     "type": "object",
+     "description": "JSON object that contains the registration details of the delegator.",
+     "properties": {
+      "id": {
+       "type": "string",
+       "description": "The reference number issued when successfully onboarding the stake account"
+      },
+      "created_at": {
+       "type": "string",
+       "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+      }
+     }
+    },
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/{network}/delegators/{stake_account}": {
+    "get": {
+     "tags": [
+      "Solana"
+     ],
+     "summary": "Get a Single Delegator",
+     "description": "This request will return the information regarding a single delegator which is being monitored by the staking partner",
+     "operationId": "getSingleDelegator",
+     "parameters": [
+      {
+       "name": "X-API-KEY",
+       "in": "header",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "network",
+       "in": "path",
+       "description": "Applicable values are mainnet, testnet and devnet",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "stake_account",
+       "in": "path",
+       "description": "The public key of the stake account belonging to the delegator.",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/DelegatorInfoResponse"
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "SolValidatorInfoResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield of the validator. This value is calculated only using the stake accounts for the specified validator that have been onboarded onto the staking platform. The calculation considers gross rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "block_rewards_apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield on block rewards earned by the stake accounts under the validator. This value is calculated considering gross block rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "total_apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield on total rewards earned by the stake accounts under the validator. This value is calculated considering gross rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "The address of the validator for which information is requested."
+      },
+      "validator_status": {
+       "type": "string",
+       "description": "The current status of the validator"
+      },
+      "delegated_balance": {
+       "type": "number",
+       "description": "The total balance delegated under the validator in SOL. The total \"net balance\" values of the delegators under the staking platform. Values will be displayed up to 9 decimal places",
+       "format": "double"
+      }
+     }
+    },
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/{network}/validators/{validator_address}": {
+    "get": {
+     "tags": [
+      "Solana"
+     ],
+     "summary": "Validator Information ",
+     "description": "Clients can use this endpoint to query detailed information about Solana validators with stake accounts under them on the staking platform.\r\n",
+     "operationId": "getValidatorInfo",
+     "parameters": [
+      {
+       "name": "X-API-KEY",
+       "in": "header",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      },
+      {
+       "name": "network",
+       "in": "path",
+       "description": "Applicable values are mainnet, testnet and devnet",
+       "required": true,
+       "schema": {
+        "type": "string",
+        "enum": [
+         "mainnet",
+         "testnet",
+         "devnet"
+        ]
+       }
+      },
+      {
+       "name": "validator_address",
+       "in": "path",
+       "description": "The public key of the validator",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      }
+     ],
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "$ref": "#/components/schemas/SolValidatorInfoResponse"
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "tags": [
+   {
+    "name": "Solana",
+    "description": "The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500."
+   }
+  ],
+  "security": [
+   {
+    "AuthorizationToken": []
+   },
+   {
+    "APIKey": []
+   }
+  ],
+  "components": {
+   "securitySchemes": {
+    "AuthorizationToken": {
+     "type": "http",
+     "description": "",
+     "scheme": "bearer",
+     "bearerFormat": "JWT"
+    },
+    "APIKey": {
+     "name": "X-API-KEY",
+     "type": "apiKey",
+     "in": "header"
+    }
+   },
+   "schemas": {
+    "ValidatorMonitoringRequest": {
+     "type": "object",
+     "required": [
+      "network",
+      "validator_address",
+      "delegators"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Applicable network. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "The address of the validator under which the stake account is delegating SOL."
+      },
+      "delegators": {
+       "type": "array",
+       "description": "A list containing the information of the delegator addresses that will be monitored on the staking platform.",
+       "items": {
+        "$ref": "#/components/schemas/Delegators"
+       }
+      }
+     }
+    },
+    "Delegators": {
+     "type": "object",
+     "description": "A list containing the information of the delegator addresses that will be monitored on the staking platform.",
+     "required": [
+      "stake_accounts",
+      "participant"
+     ],
+     "properties": {
+      "stake_accounts": {
+       "type": "array",
+       "description": "A list of the delegator addresses. A maximum of 250 entries are allowed. ",
+       "items": {
+        "type": "string",
+        "description": "A list of the delegator addresses"
+       }
+      },
+      "participant": {
+       "type": "string",
+       "description": "The participant name registered on the staking platform that is associated with the client's customer. "
+      },
+      "account": {
+       "type": "string",
+       "description": "The account name registered on the staking platform that is associated with the client's customer. If not provided, requests will be assigned to a default account."
+      }
+     }
+    },
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    },
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "paths": {
+   "/v1/solana/delegators/monitoring": {
+    "post": {
+     "tags": [
+      "Solana"
+     ],
+     "summary": "Delegator Monitoring",
+     "description": "Clients can invoke this endpoint to monitor existing delegations by retrieving and tracking delegator addresses (stake accounts) on the staking platform. A request with a list of delegator addresses enables the creation of corresponding positions on the staking platform for monitoring purposes.",
+     "operationId": "createValidatorMonitoringUpdate",
+     "parameters": [
+      {
+       "name": "X-API-KEY",
+       "in": "header",
+       "required": true,
+       "schema": {
+        "type": "string"
+       }
+      }
+     ],
+     "requestBody": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ValidatorMonitoringRequest"
+        }
+       }
+      },
+      "required": true
+     },
+     "responses": {
+      "200": {
+       "description": "Sample success response payload. See Response schema below for wrapper",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "delegator_monitoring_reference_id": {
+            "type": "string",
+            "description": "A system-generated unique identifier for the API request. This identifier is stamped in the 'Link ID' fields of all positions created through the API request."
+           }
+          }
+         }
+        }
+       }
+      },
+      "400": {
+       "description": "Bad Request",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/ErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "500": {
+       "description": "Internal server error.",
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "errors": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/InternalServerErrorMessage"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "ErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "InternalServerErrorMessage": {
+     "type": "object",
+     "properties": {
+      "code": {
+       "type": "integer",
+       "format": "int32"
+      },
+      "message": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "SOLDelegatorRewardsRequest": {
+     "type": "object",
+     "required": [
+      "network",
+      "rollup_type",
+      "start",
+      "end",
+      "stake_accounts"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which validators should be created. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "rollup_type": {
+       "type": "integer",
+       "description": "Denotes the granularity of rewards breakdown. THe applicable values are;\n- 1 (epoch)\n- 2 (date)",
+       "enum": [
+        1,
+        2
+       ]
+      },
+      "start": {
+       "type": "string",
+       "description": "It specifies the start epoch if the type is 1, or the start date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+      },
+      "end": {
+       "type": "string",
+       "description": "It specifies the end epoch if the type is 1, or the end date in the \"YYYY-MM-DD\" format (UTC timezone) if the type is 2."
+      },
+      "stake_accounts": {
+       "type": "array",
+       "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed.",
+       "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the rewards breakdown. A maximum of 50 entries are allowed."
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "DelegatorRewardsInfoResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request.",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "start": {
+       "type": "string",
+       "description": "Start epoch or start date specified in the request."
+      },
+      "end": {
+       "type": "string",
+       "description": "End epoch or end date specified in the request."
+      },
+      "page": {
+       "type": "integer",
+       "description": "The current page number sent in the request.",
+       "format": "int32"
+      },
+      "total": {
+       "type": "integer",
+       "description": "The total number of records resulted for the input criteria.",
+       "format": "int64"
+      },
+      "data": {
+       "type": "array",
+       "description": "An array that contains stake account rewards.",
+       "items": {
+        "$ref": "#/components/schemas/DelegatorReward"
+       }
+      }
+     },
+     "title": ""
+    },
+    "DelegatorReward": {
+     "type": "object",
+     "properties": {
+      "stake_account": {
+       "type": "string",
+       "description": "The stake_account that received the rewards."
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "Address of the validator that distributed the rewards (the validator the delegator is attached to)."
+      },
+      "total_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator earned from inception in SOL. Values will be displayed up to 9 decimal places\n\nNote: Block rewards will not be available from delegator inception, therefore this field will not consider block rewards. Only inflation rewards and MEV rewards will be considered.\n"
+      },
+      "total_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator earned from inception in lamports.\n\nNote : Similar to \"total_sol\" this field will not consider block rewards\n"
+      },
+      "apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield of the stake account. This value is calculated considering net inflation and net MEV rewards earned during the last 10 completed epochs."
+      },
+      "block_rewards_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield on block rewards earned by the stake account. This value is calculated considering net block rewards earned during the last 10 completed epochs."
+      },
+      "total_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The total Annualized Percentage Yield on all rewards attributable to the stake account in the last 10 epochs, after commissions and rebates."
+      },
+      "total_accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator has earned for the query criteria in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_accumulated_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator has earned for the query criteria in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "accumulated_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in SOL.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in lamports.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the query criteria in SOL, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the query criteria in lamports, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_rewards": {
+       "type": "array",
+       "description": "Protocol, MEV, and block rewards for the given delegator and query criteria. A new rewards type \"NET_BLOCK\" has been introduced.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will be set to 0.\n",
+       "items": {
+        "$ref": "#/components/schemas/AccumulatedReward"
+       }
+      },
+      "rewards_breakdown": {
+       "type": "array",
+       "description": "Per-epoch (or period) rewards breakdown.",
+       "items": {
+        "$ref": "#/components/schemas/RewardBreakdown"
+       }
+      }
+     },
+     "required": [
+      "stake_account",
+      "validator_address"
+     ]
+    },
+    "AccumulatedReward": {
+     "type": "object",
+     "properties": {
+      "accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Accumulated rewards in SOL between the start and end specified in the request. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "accumulated_lamports": {
+       "type": "integer",
+       "description": "Accumulated rewards in lamports between the start and end specified in the request.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    },
+    "RewardBreakdown": {
+     "type": "object",
+     "description": "Rewards for a given epoch/period.",
+     "properties": {
+      "epoch": {
+       "type": "integer",
+       "description": "The epoch corresponding to the rewards. This is applicable only if the rollup_type is 1"
+      },
+      "timestamp": {
+       "type": "string",
+       "format": "date-time",
+       "description": "If the rollup_type is 1, it should specify the timestamp corresponding to the end of the epoch."
+      },
+      "balance": {
+       "type": "number",
+       "format": "double",
+       "description": "The balance of the account after rewards have been added."
+      },
+      "total_epoch_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_lamports": {
+       "type": "integer",
+       "description": "Total rewards accumulated during the period in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The gross block rewards earned by the stake account for the epoch, in SOL."
+      },
+      "total_epoch_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The gross block rewards earned by the stake account for the epoch, in lamports."
+      },
+      "total_epoch_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the epoch, in SOL, net of the staking platform commissions."
+      },
+      "total_epoch_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the epoch, in lamports, net of the staking platform commissions."
+      },
+      "rewards": {
+       "type": "array",
+       "description": "An array that contains protocol, mev, and block rewards corresponding to the given epoch. A new rewards type \"NET_BLOCK\" has been introduced.",
+       "items": {
+        "$ref": "#/components/schemas/RewardItem"
+       }
+      }
+     },
+     "required": [
+      "rewards"
+     ]
+    },
+    "RewardItem": {
+     "type": "object",
+     "properties": {
+      "rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "rewards_lamports": {
+       "type": "integer",
+       "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "DelegatorReward": {
+     "type": "object",
+     "properties": {
+      "stake_account": {
+       "type": "string",
+       "description": "The stake_account that received the rewards."
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "Address of the validator that distributed the rewards (the validator the delegator is attached to)."
+      },
+      "total_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator earned from inception in SOL. Values will be displayed up to 9 decimal places\n\nNote: Block rewards will not be available from delegator inception, therefore this field will not consider block rewards. Only inflation rewards and MEV rewards will be considered.\n"
+      },
+      "total_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator earned from inception in lamports.\n\nNote : Similar to \"total_sol\" this field will not consider block rewards\n"
+      },
+      "apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield of the stake account. This value is calculated considering net inflation and net MEV rewards earned during the last 10 completed epochs."
+      },
+      "block_rewards_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The Annualized Percentage Yield on block rewards earned by the stake account. This value is calculated considering net block rewards earned during the last 10 completed epochs."
+      },
+      "total_apy": {
+       "type": "number",
+       "format": "double",
+       "description": "The total Annualized Percentage Yield on all rewards attributable to the stake account in the last 10 epochs, after commissions and rebates."
+      },
+      "total_accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards the delegator has earned for the query criteria in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_accumulated_lamports": {
+       "type": "integer",
+       "description": "Total rewards the delegator has earned for the query criteria in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "accumulated_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in SOL.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The total gross block rewards earned by the stake account for the query criteria in lamports.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the query criteria in SOL, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the query criteria in lamports, net of the staking platform commissions.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will not be considered.\n"
+      },
+      "accumulated_rewards": {
+       "type": "array",
+       "description": "Protocol, MEV, and block rewards for the given delegator and query criteria. A new rewards type \"NET_BLOCK\" has been introduced.\n\nNote: If the query covers epochs/dates prior to implementation of the block rewards calculation, block rewards will be set to 0.\n",
+       "items": {
+        "$ref": "#/components/schemas/AccumulatedReward"
+       }
+      },
+      "rewards_breakdown": {
+       "type": "array",
+       "description": "Per-epoch (or period) rewards breakdown.",
+       "items": {
+        "$ref": "#/components/schemas/RewardBreakdown"
+       }
+      }
+     },
+     "required": [
+      "stake_account",
+      "validator_address"
+     ]
+    },
+    "AccumulatedReward": {
+     "type": "object",
+     "properties": {
+      "accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Accumulated rewards in SOL between the start and end specified in the request. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "accumulated_lamports": {
+       "type": "integer",
+       "description": "Accumulated rewards in lamports between the start and end specified in the request.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    },
+    "RewardBreakdown": {
+     "type": "object",
+     "description": "Rewards for a given epoch/period.",
+     "properties": {
+      "epoch": {
+       "type": "integer",
+       "description": "The epoch corresponding to the rewards. This is applicable only if the rollup_type is 1"
+      },
+      "timestamp": {
+       "type": "string",
+       "format": "date-time",
+       "description": "If the rollup_type is 1, it should specify the timestamp corresponding to the end of the epoch."
+      },
+      "balance": {
+       "type": "number",
+       "format": "double",
+       "description": "The balance of the account after rewards have been added."
+      },
+      "total_epoch_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_lamports": {
+       "type": "integer",
+       "description": "Total rewards accumulated during the period in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The gross block rewards earned by the stake account for the epoch, in SOL."
+      },
+      "total_epoch_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The gross block rewards earned by the stake account for the epoch, in lamports."
+      },
+      "total_epoch_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the epoch, in SOL, net of the staking platform commissions."
+      },
+      "total_epoch_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the epoch, in lamports, net of the staking platform commissions."
+      },
+      "rewards": {
+       "type": "array",
+       "description": "An array that contains protocol, mev, and block rewards corresponding to the given epoch. A new rewards type \"NET_BLOCK\" has been introduced.",
+       "items": {
+        "$ref": "#/components/schemas/RewardItem"
+       }
+      }
+     },
+     "required": [
+      "rewards"
+     ]
+    },
+    "RewardItem": {
+     "type": "object",
+     "properties": {
+      "rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "rewards_lamports": {
+       "type": "integer",
+       "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "AccumulatedReward": {
+     "type": "object",
+     "properties": {
+      "accumulated_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Accumulated rewards in SOL between the start and end specified in the request. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "accumulated_lamports": {
+       "type": "integer",
+       "description": "Accumulated rewards in lamports between the start and end specified in the request.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "RewardBreakdown": {
+     "type": "object",
+     "description": "Rewards for a given epoch/period.",
+     "properties": {
+      "epoch": {
+       "type": "integer",
+       "description": "The epoch corresponding to the rewards. This is applicable only if the rollup_type is 1"
+      },
+      "timestamp": {
+       "type": "string",
+       "format": "date-time",
+       "description": "If the rollup_type is 1, it should specify the timestamp corresponding to the end of the epoch."
+      },
+      "balance": {
+       "type": "number",
+       "format": "double",
+       "description": "The balance of the account after rewards have been added."
+      },
+      "total_epoch_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Total rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_lamports": {
+       "type": "integer",
+       "description": "Total rewards accumulated during the period in lamports.\n\nUpdate: Reflects the sum of MEV and inflation rewards only. Block rewards are excluded from this calculation.\n"
+      },
+      "total_epoch_gross_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The gross block rewards earned by the stake account for the epoch, in SOL."
+      },
+      "total_epoch_gross_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The gross block rewards earned by the stake account for the epoch, in lamports."
+      },
+      "total_epoch_net_block_rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "The net block rewards earned by the stake account for the epoch, in SOL, net of the staking platform commissions."
+      },
+      "total_epoch_net_block_rewards_lamports": {
+       "type": "integer",
+       "description": "The net block rewards earned by the stake account for the epoch, in lamports, net of the staking platform commissions."
+      },
+      "rewards": {
+       "type": "array",
+       "description": "An array that contains protocol, mev, and block rewards corresponding to the given epoch. A new rewards type \"NET_BLOCK\" has been introduced.",
+       "items": {
+        "$ref": "#/components/schemas/RewardItem"
+       }
+      }
+     },
+     "required": [
+      "rewards"
+     ]
+    },
+    "RewardItem": {
+     "type": "object",
+     "properties": {
+      "rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "rewards_lamports": {
+       "type": "integer",
+       "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "RewardItem": {
+     "type": "object",
+     "properties": {
+      "rewards_sol": {
+       "type": "number",
+       "format": "double",
+       "description": "Rewards accumulated during the period in SOL. Values will be displayed up to 9 decimal places\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "rewards_lamports": {
+       "type": "integer",
+       "description": "Rewards accumulated during the period in lamports.\n\nWhen \"type\" = \"NET_BLOCK\", net block rewards will be returned.\n"
+      },
+      "type": {
+       "type": "string",
+       "description": "Type of rewards.",
+       "enum": [
+        "PROTOCOL",
+        "MEV",
+        "BLOCK",
+        "NET_BLOCK"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "DelegatorInfoListRequest": {
+     "type": "object",
+     "required": [
+      "network"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which the queried stake accounts have been created . Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "participant": {
+       "type": "string",
+       "description": "The participant name registered on the staking platform from which stake accounts need to be retrieved."
+      },
+      "account": {
+       "type": "string",
+       "description": "The account name registered on the staking platform from which stake accounts need to be retrieved."
+      },
+      "status": {
+       "type": "array",
+       "description": "The status of the stake accounts that need to be retrieved. Results will be returned in the order of the statuses sent in the request. Supported values;\r\n- ACTIVE\r\n- INACTIVE\r\n- ACTIVATING\r\n- DEACTIVATING",
+       "items": {
+        "type": "string",
+        "enum": [
+         "ACTIVE",
+         "INACTIVE",
+         "ACTIVATING",
+         "DEACTIVATING"
+        ]
+       }
+      },
+      "stake_accounts": {
+       "type": "array",
+       "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed.",
+       "items": {
+        "type": "string",
+        "description": "List of delegator stake accounts to fetch the delegator information. A maximum of 250 entries are allowed."
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "DelegatorInfoListResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "page": {
+       "type": "integer",
+       "description": "The current page number sent in the request.",
+       "format": "int32"
+      },
+      "total": {
+       "type": "integer",
+       "description": "Total number of stake accounts being sent in the API response",
+       "format": "int64"
+      },
+      "data": {
+       "type": "object",
+       "description": "An array that contains the details about stake accounts.",
+       "properties": {
+        "stake_account": {
+         "type": "string",
+         "description": "\t\nThe public key of the stake account"
+        },
+        "status": {
+         "type": "string",
+         "description": "Current status of the delegator"
+        },
+        "balance_in_sol": {
+         "type": "number",
+         "description": "The current balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+         "format": "double"
+        },
+        "balance_in_lamports": {
+         "type": "number",
+         "description": "The balance in the stake account in Lamports",
+         "format": "double"
+        },
+        "validator_info": {
+         "$ref": "#/components/schemas/ValidatorInfo"
+        },
+        "provision_info": {
+         "$ref": "#/components/schemas/ProvisionInfo"
+        }
+       }
+      }
+     }
+    },
+    "ValidatorInfo": {
+     "type": "object",
+     "description": "JSON object that represents the validator for which the given stake account is attached to.",
+     "properties": {
+      "address": {
+       "type": "string",
+       "description": "The public key of the validator"
+      }
+     }
+    },
+    "ProvisionInfo": {
+     "type": "object",
+     "description": "JSON object that contains the registration details of the delegator.",
+     "properties": {
+      "id": {
+       "type": "string",
+       "description": "The reference number issued when successfully onboarding the stake account"
+      },
+      "created_at": {
+       "type": "string",
+       "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "DelegatorInfoResponse": {
+     "required": [
+      "network"
+     ],
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "The network on which validators should be created. Supported values.",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "stake_account": {
+       "type": "string",
+       "description": "\t\nThe public key of the stake account"
+      },
+      "status": {
+       "type": "string",
+       "description": "Current status of the delegator"
+      },
+      "balance_in_lamports": {
+       "type": "number",
+       "description": "The balance in the stake account in Lamports",
+       "format": "double"
+      },
+      "balance_in_sol": {
+       "type": "number",
+       "description": "The balance of the stake account in SOL. Values will be displayed up to 9 decimal places",
+       "format": "double"
+      },
+      "validator_info": {
+       "$ref": "#/components/schemas/ValidatorInfo"
+      },
+      "provision_info": {
+       "$ref": "#/components/schemas/ProvisionInfo"
+      }
+     }
+    },
+    "ValidatorInfo": {
+     "type": "object",
+     "description": "JSON object that represents the validator for which the given stake account is attached to.",
+     "properties": {
+      "address": {
+       "type": "string",
+       "description": "The public key of the validator"
+      }
+     }
+    },
+    "ProvisionInfo": {
+     "type": "object",
+     "description": "JSON object that contains the registration details of the delegator.",
+     "properties": {
+      "id": {
+       "type": "string",
+       "description": "The reference number issued when successfully onboarding the stake account"
+      },
+      "created_at": {
+       "type": "string",
+       "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "ProvisionInfo": {
+     "type": "object",
+     "description": "JSON object that contains the registration details of the delegator.",
+     "properties": {
+      "id": {
+       "type": "string",
+       "description": "The reference number issued when successfully onboarding the stake account"
+      },
+      "created_at": {
+       "type": "string",
+       "description": "Created date and time in the platform. This should be YYYY-MM-DD HH:mm:ss in UTC."
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "ValidatorInfo": {
+     "type": "object",
+     "description": "JSON object that represents the validator for which the given stake account is attached to.",
+     "properties": {
+      "address": {
+       "type": "string",
+       "description": "The public key of the validator"
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "SolValidatorInfoResponse": {
+     "type": "object",
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield of the validator. This value is calculated only using the stake accounts for the specified validator that have been onboarded onto the staking platform. The calculation considers gross rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "block_rewards_apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield on block rewards earned by the stake accounts under the validator. This value is calculated considering gross block rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "total_apy": {
+       "type": "number",
+       "description": "The Annualized Percentage Yield on total rewards earned by the stake accounts under the validator. This value is calculated considering gross rewards earned across the past 10 epochs.",
+       "format": "double"
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "The address of the validator for which information is requested."
+      },
+      "validator_status": {
+       "type": "string",
+       "description": "The current status of the validator"
+      },
+      "delegated_balance": {
+       "type": "number",
+       "description": "The total balance delegated under the validator in SOL. The total \"net balance\" values of the delegators under the staking platform. Values will be displayed up to 9 decimal places",
+       "format": "double"
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "ValidatorMonitoringRequest": {
+     "type": "object",
+     "required": [
+      "network",
+      "validator_address",
+      "delegators"
+     ],
+     "properties": {
+      "network": {
+       "type": "string",
+       "description": "Applicable network. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+       "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+       ]
+      },
+      "validator_address": {
+       "type": "string",
+       "description": "The address of the validator under which the stake account is delegating SOL."
+      },
+      "delegators": {
+       "type": "array",
+       "description": "A list containing the information of the delegator addresses that will be monitored on the staking platform.",
+       "items": {
+        "$ref": "#/components/schemas/Delegators"
+       }
+      }
+     }
+    },
+    "Delegators": {
+     "type": "object",
+     "description": "A list containing the information of the delegator addresses that will be monitored on the staking platform.",
+     "required": [
+      "stake_accounts",
+      "participant"
+     ],
+     "properties": {
+      "stake_accounts": {
+       "type": "array",
+       "description": "A list of the delegator addresses. A maximum of 250 entries are allowed. ",
+       "items": {
+        "type": "string",
+        "description": "A list of the delegator addresses"
+       }
+      },
+      "participant": {
+       "type": "string",
+       "description": "The participant name registered on the staking platform that is associated with the client's customer. "
+      },
+      "account": {
+       "type": "string",
+       "description": "The account name registered on the staking platform that is associated with the client's customer. If not provided, requests will be assigned to a default account."
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "openapi": "3.0.0",
+  "info": {
+   "title": "Solana API Specification",
+   "version": "1.120.0"
+  },
+  "components": {
+   "schemas": {
+    "Delegators": {
+     "type": "object",
+     "description": "A list containing the information of the delegator addresses that will be monitored on the staking platform.",
+     "required": [
+      "stake_accounts",
+      "participant"
+     ],
+     "properties": {
+      "stake_accounts": {
+       "type": "array",
+       "description": "A list of the delegator addresses. A maximum of 250 entries are allowed. ",
+       "items": {
+        "type": "string",
+        "description": "A list of the delegator addresses"
+       }
+      },
+      "participant": {
+       "type": "string",
+       "description": "The participant name registered on the staking platform that is associated with the client's customer. "
+      },
+      "account": {
+       "type": "string",
+       "description": "The account name registered on the staking platform that is associated with the client's customer. If not provided, requests will be assigned to a default account."
+      }
+     }
+    }
+   }
+  }
+ }
+]

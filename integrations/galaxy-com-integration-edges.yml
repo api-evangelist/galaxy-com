@@ -1,0 +1,20 @@
+generated: '2026-10-14'
+method: none
+source:
+- https://zapier.com/apps/galaxy-com/integrations
+- https://zapier.com/apps/galaxy/integrations
+- https://n8n.io/integrations/galaxy-com/
+- https://n8n.io/integrations/galaxy/
+- https://composio.dev/toolkits/galaxy-com
+- https://monid.ai/tools/galaxy-com
+checked:
+- https://composio.dev/toolkits/galaxy-com
+- https://monid.ai/tools/galaxy-com
+- https://n8n.io/integrations/galaxy-com/
+- https://n8n.io/integrations/galaxy/
+- https://zapier.com/apps/galaxy-com/integrations
+- https://zapier.com/apps/galaxy/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []

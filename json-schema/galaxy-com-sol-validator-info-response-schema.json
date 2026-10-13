@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/galaxy-com/main/json-schema/galaxy-com-sol-validator-info-response-schema.json",
+  "title": "SolValidatorInfoResponse",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/SolValidatorInfoResponse",
+  "type": "object",
+  "properties": {
+    "network": {
+      "type": "string",
+      "description": "Network specified in the request. Supported values;\r\n- mainnet\r\n- testnet\r\n- devnet",
+      "enum": [
+        "mainnet",
+        "testnet",
+        "devnet"
+      ]
+    },
+    "apy": {
+      "type": "number",
+      "description": "The Annualized Percentage Yield of the validator. This value is calculated only using the stake accounts for the specified validator that have been onboarded onto the staking platform. The calculation considers gross rewards earned across the past 10 epochs.",
+      "format": "double"
+    },
+    "block_rewards_apy": {
+      "type": "number",
+      "description": "The Annualized Percentage Yield on block rewards earned by the stake accounts under the validator. This value is calculated considering gross block rewards earned across the past 10 epochs.",
+      "format": "double"
+    },
+    "total_apy": {
+      "type": "number",
+      "description": "The Annualized Percentage Yield on total rewards earned by the stake accounts under the validator. This value is calculated considering gross rewards earned across the past 10 epochs.",
+      "format": "double"
+    },
+    "validator_address": {
+      "type": "string",
+      "description": "The address of the validator for which information is requested."
+    },
+    "validator_status": {
+      "type": "string",
+      "description": "The current status of the validator"
+    },
+    "delegated_balance": {
+      "type": "number",
+      "description": "The total balance delegated under the validator in SOL. The total \"net balance\" values of the delegators under the staking platform. Values will be displayed up to 9 decimal places",
+      "format": "double"
+    }
+  }
+}

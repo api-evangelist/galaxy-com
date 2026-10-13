@@ -1,0 +1,6 @@
+name: Galaxy Staking Pre-production
+generated: '2026-10-14'
+method: searched
+source: https://docs.staking.galaxy.com/llms.txt
+description: The staking docs publish a separate pre-production section (home, authentication, Ethereum and Solana references) alongside production. No test keys, base URL or test values are published.
+docs: https://docs.staking.galaxy.com/pre-production

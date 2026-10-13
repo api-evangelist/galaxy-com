@@ -1,0 +1,31 @@
+name: Galaxy Staking API Authorization Errors
+generated: '2026-10-14'
+method: searched
+source: https://docs.staking.galaxy.com/authentication-and-authorization/authorization-token
+format: application/json
+envelope: '{"message": "<text>"}'
+problems:
+- status: 403
+  title: Missing Token
+  description: The authorization token was not provided
+  remediation: Send the signed JWT as a bearer token in the Authorization header.
+- status: 403
+  title: Malformed Token
+  description: The authorization token was malformed
+  remediation: Rebuild the JWT (header, payload, signature) per the documented steps.
+- status: 403
+  title: Expired Token
+  description: The authorization token has expired
+  remediation: Generate a fresh token for each request.
+- status: 403
+  title: Invalid Signature Presented
+  description: The signature in the authorization token was invalid
+  remediation: Sign with the RSA4096 private key whose public key was shared with Galaxy.
+- status: 403
+  title: Exceeded Maximum Duration
+  description: The expiration timestamp of the authorization token in UTC must be less than 30 seconds from the issued-at time
+  remediation: Set exp to less than iat + 30 seconds.
+- status: 400
+  title: Duplicate client request
+  description: Duplicate client request; the request has already been served.
+  remediation: Use a new client_req_id for a new request.

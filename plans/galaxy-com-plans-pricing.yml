@@ -1,0 +1,12 @@
+name: Galaxy Plans and Pricing
+generated: '2026-10-14'
+method: none
+source: https://www.galaxy.com/apis
+plan_count: 0
+plans: []
+audience: unclear
+pricing_basis: negotiated
+published: false
+delivery:
+  mode: managed
+note: No API pricing is published; the staking API key is issued when the client is registered with the Galaxy platform (institutional onboarding).

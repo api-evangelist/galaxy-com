@@ -1,0 +1,7 @@
+name: Galaxy Staking API Rate Limits
+generated: '2026-10-14'
+method: none
+source: https://docs.staking.galaxy.com/llms.txt
+limit_count: 0
+limits: []
+note: None of the ten public staking docs pages listed in llms.txt state a rate limit, 429 behaviour or rate-limit headers.

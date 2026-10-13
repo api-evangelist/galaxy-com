@@ -1,0 +1,652 @@
+{
+  "@context": {
+    "@vocab": "https://galaxy.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "galaxy": "https://galaxy.com/schema#",
+    "StakingRequest": "galaxy:StakingRequest",
+    "client_req_id": {
+      "@id": "galaxy:client_req_id",
+      "@type": "xsd:string"
+    },
+    "network": {
+      "@id": "galaxy:network",
+      "@type": "xsd:string"
+    },
+    "withdrawal_credentials_type": {
+      "@id": "galaxy:withdrawal_credentials_type"
+    },
+    "amounts_unit": {
+      "@id": "galaxy:amounts_unit"
+    },
+    "amounts": {
+      "@id": "galaxy:amounts",
+      "@container": "@list"
+    },
+    "validator_count": {
+      "@id": "galaxy:validator_count",
+      "@type": "xsd:integer"
+    },
+    "withdrawal_address": {
+      "@id": "galaxy:withdrawal_address",
+      "@type": "xsd:string"
+    },
+    "fee_recipient_address": {
+      "@id": "galaxy:fee_recipient_address",
+      "@type": "xsd:string"
+    },
+    "region": {
+      "@id": "galaxy:region",
+      "@type": "xsd:string"
+    },
+    "account": {
+      "@id": "galaxy:account",
+      "@type": "xsd:string"
+    },
+    "StakingResponse": "galaxy:StakingResponse",
+    "staking_ref_id": {
+      "@id": "galaxy:staking_ref_id",
+      "@type": "xsd:string"
+    },
+    "provisioned_at": {
+      "@id": "galaxy:provisioned_at",
+      "@type": "xsd:string"
+    },
+    "data": {
+      "@id": "galaxy:data",
+      "@container": "@list"
+    },
+    "BatchData": "galaxy:BatchData",
+    "batch_id": {
+      "@id": "galaxy:batch_id",
+      "@type": "xsd:integer"
+    },
+    "deposit_data": {
+      "@id": "galaxy:deposit_data",
+      "@container": "@list"
+    },
+    "deposit_transaction": {
+      "@id": "galaxy:deposit_transaction",
+      "@type": "@id"
+    },
+    "DepositData": "galaxy:DepositData",
+    "pubkey": {
+      "@id": "galaxy:pubkey",
+      "@type": "xsd:string"
+    },
+    "amount": {
+      "@id": "galaxy:amount",
+      "@type": "xsd:decimal"
+    },
+    "withdrawal_credentials": {
+      "@id": "galaxy:withdrawal_credentials",
+      "@type": "xsd:string"
+    },
+    "signature": {
+      "@id": "galaxy:signature",
+      "@type": "xsd:string"
+    },
+    "deposit_data_root": {
+      "@id": "galaxy:deposit_data_root",
+      "@type": "xsd:string"
+    },
+    "deposit_message_root": {
+      "@id": "galaxy:deposit_message_root",
+      "@type": "xsd:string"
+    },
+    "fork_version": {
+      "@id": "galaxy:fork_version",
+      "@type": "xsd:string"
+    },
+    "deposit_cli_version": {
+      "@id": "galaxy:deposit_cli_version",
+      "@type": "xsd:string"
+    },
+    "DepositTransaction": "galaxy:DepositTransaction",
+    "deposit_amount_wei": {
+      "@id": "galaxy:deposit_amount_wei",
+      "@type": "xsd:string"
+    },
+    "deposit_address": {
+      "@id": "galaxy:deposit_address",
+      "@type": "xsd:string"
+    },
+    "contract_call_data": {
+      "@id": "galaxy:contract_call_data",
+      "@type": "xsd:string"
+    },
+    "StakingErrorListResponse": "galaxy:StakingErrorListResponse",
+    "errors": {
+      "@id": "galaxy:errors",
+      "@container": "@list"
+    },
+    "ErrorMessage": "galaxy:ErrorMessage",
+    "code": {
+      "@id": "galaxy:code",
+      "@type": "xsd:integer"
+    },
+    "message": {
+      "@id": "galaxy:message",
+      "@type": "xsd:string"
+    },
+    "InternalServerStakingErrorListResponse": "galaxy:InternalServerStakingErrorListResponse",
+    "InternalServerErrorMessage": "galaxy:InternalServerErrorMessage",
+    "ValidatorExitRequest": "galaxy:ValidatorExitRequest",
+    "type": {
+      "@id": "galaxy:type",
+      "@type": "xsd:integer"
+    },
+    "pubkeys": {
+      "@id": "galaxy:pubkeys",
+      "@container": "@list"
+    },
+    "validator_indexes": {
+      "@id": "galaxy:validator_indexes",
+      "@container": "@list"
+    },
+    "ValidatorExitResponse": "galaxy:ValidatorExitResponse",
+    "ValidatorExitData": "galaxy:ValidatorExitData",
+    "validator_index": {
+      "@id": "galaxy:validator_index",
+      "@type": "xsd:integer"
+    },
+    "status": {
+      "@id": "galaxy:status",
+      "@type": "xsd:string"
+    },
+    "ValidatorPreSignedExitResponse": "galaxy:ValidatorPreSignedExitResponse",
+    "PreSignedExitDBO": "galaxy:PreSignedExitDBO",
+    "encrypted_exit_message": {
+      "@id": "galaxy:encrypted_exit_message",
+      "@type": "xsd:string"
+    },
+    "ValidatorsInfoResponse": "galaxy:ValidatorsInfoResponse",
+    "page": {
+      "@id": "galaxy:page",
+      "@type": "xsd:integer"
+    },
+    "total": {
+      "@id": "galaxy:total",
+      "@type": "xsd:integer"
+    },
+    "ValidatorInfoData": "galaxy:ValidatorInfoData",
+    "last_monitored_epoch": {
+      "@id": "galaxy:last_monitored_epoch",
+      "@type": "xsd:integer"
+    },
+    "epoch": {
+      "@id": "galaxy:epoch",
+      "@type": "xsd:integer"
+    },
+    "withdrawal_credential_type": {
+      "@id": "galaxy:withdrawal_credential_type",
+      "@type": "xsd:string"
+    },
+    "estimated_activation_at": {
+      "@id": "galaxy:estimated_activation_at",
+      "@type": "xsd:string"
+    },
+    "estimated_exit_at": {
+      "@id": "galaxy:estimated_exit_at",
+      "@type": "xsd:string"
+    },
+    "estimated_withdrawal_at": {
+      "@id": "galaxy:estimated_withdrawal_at",
+      "@type": "xsd:string"
+    },
+    "balance_in_wei": {
+      "@id": "galaxy:balance_in_wei",
+      "@type": "xsd:string"
+    },
+    "balance_in_eth": {
+      "@id": "galaxy:balance_in_eth",
+      "@type": "xsd:decimal"
+    },
+    "status_history": {
+      "@id": "galaxy:status_history",
+      "@container": "@list"
+    },
+    "voluntary_exit": {
+      "@id": "galaxy:voluntary_exit",
+      "@type": "@id"
+    },
+    "presigned_exit": {
+      "@id": "galaxy:presigned_exit",
+      "@type": "@id"
+    },
+    "staking_request_info": {
+      "@id": "galaxy:staking_request_info",
+      "@type": "@id"
+    },
+    "StatusHistoryData": "galaxy:StatusHistoryData",
+    "transitioned_at": {
+      "@id": "galaxy:transitioned_at",
+      "@type": "xsd:string"
+    },
+    "VoluntaryExitData": "galaxy:VoluntaryExitData",
+    "request_id": {
+      "@id": "galaxy:request_id",
+      "@type": "xsd:string"
+    },
+    "requested_at": {
+      "@id": "galaxy:requested_at",
+      "@type": "xsd:string"
+    },
+    "submitted_at": {
+      "@id": "galaxy:submitted_at",
+      "@type": "xsd:string"
+    },
+    "PresignedExitData": "galaxy:PresignedExitData",
+    "StakingRequestInfo": "galaxy:StakingRequestInfo",
+    "ValidatorErrorListResponse": "galaxy:ValidatorErrorListResponse",
+    "error": {
+      "@id": "galaxy:error",
+      "@container": "@list"
+    },
+    "ValidatorErrorMessage": "galaxy:ValidatorErrorMessage",
+    "InternalServerInfoErrorMessage": "galaxy:InternalServerInfoErrorMessage",
+    "ValidatorInfoResponse": "galaxy:ValidatorInfoResponse",
+    "ValidatorsSummaryResponse": "galaxy:ValidatorsSummaryResponse",
+    "SummaryData": "galaxy:SummaryData",
+    "count": {
+      "@id": "galaxy:count",
+      "@type": "xsd:integer"
+    },
+    "EthEpochLevelInfoRequest": "galaxy:EthEpochLevelInfoRequest",
+    "start": {
+      "@id": "galaxy:start",
+      "@type": "xsd:string"
+    },
+    "end": {
+      "@id": "galaxy:end",
+      "@type": "xsd:string"
+    },
+    "rollup_type": {
+      "@id": "galaxy:rollup_type",
+      "@type": "xsd:string"
+    },
+    "cl_rewards_breakdown": {
+      "@id": "galaxy:cl_rewards_breakdown",
+      "@type": "xsd:boolean"
+    },
+    "EthEpochLevelInfoResponseWithWithdrawalSlotInfo": "galaxy:EthEpochLevelInfoResponseWithWithdrawalSlotInfo",
+    "WithdrawalSlotInfoType1": "galaxy:WithdrawalSlotInfoType1",
+    "timestamp": {
+      "@id": "galaxy:timestamp",
+      "@type": "xsd:string"
+    },
+    "slot": {
+      "@id": "galaxy:slot",
+      "@type": "xsd:integer"
+    },
+    "block": {
+      "@id": "galaxy:block",
+      "@type": "xsd:integer"
+    },
+    "withdrawal_amount_eth": {
+      "@id": "galaxy:withdrawal_amount_eth",
+      "@type": "xsd:decimal"
+    },
+    "withdrawal_amount_wei": {
+      "@id": "galaxy:withdrawal_amount_wei",
+      "@type": "xsd:string"
+    },
+    "is_full_withdrawal": {
+      "@id": "galaxy:is_full_withdrawal",
+      "@type": "xsd:boolean"
+    },
+    "EthEpochLevelInfoResponseWithValidatorData": "galaxy:EthEpochLevelInfoResponseWithValidatorData",
+    "ValidatorAddressWiseData": "galaxy:ValidatorAddressWiseData",
+    "total_eth": {
+      "@id": "galaxy:total_eth",
+      "@type": "xsd:decimal"
+    },
+    "total_wei": {
+      "@id": "galaxy:total_wei",
+      "@type": "xsd:string"
+    },
+    "accumulated_rewards": {
+      "@id": "galaxy:accumulated_rewards",
+      "@container": "@list"
+    },
+    "rewards_breakdown": {
+      "@id": "galaxy:rewards_breakdown",
+      "@container": "@list"
+    },
+    "ConsensusAccumulatedReward": "galaxy:ConsensusAccumulatedReward",
+    "accumulated_eth": {
+      "@id": "galaxy:accumulated_eth",
+      "@type": "xsd:decimal"
+    },
+    "accumulated_wei": {
+      "@id": "galaxy:accumulated_wei",
+      "@type": "xsd:string"
+    },
+    "ExecutionAccumulatedReward": "galaxy:ExecutionAccumulatedReward",
+    "RewardsBreakdown": "galaxy:RewardsBreakdown",
+    "actual_balance_in_wei": {
+      "@id": "galaxy:actual_balance_in_wei",
+      "@type": "xsd:string"
+    },
+    "actual_balance_in_eth": {
+      "@id": "galaxy:actual_balance_in_eth",
+      "@type": "xsd:decimal"
+    },
+    "rewards": {
+      "@id": "galaxy:rewards",
+      "@container": "@list"
+    },
+    "ConsensusReward": "galaxy:ConsensusReward",
+    "rewards_eth": {
+      "@id": "galaxy:rewards_eth",
+      "@type": "xsd:decimal"
+    },
+    "rewards_wei": {
+      "@id": "galaxy:rewards_wei",
+      "@type": "xsd:string"
+    },
+    "attestation_rewards_eth": {
+      "@id": "galaxy:attestation_rewards_eth",
+      "@type": "xsd:decimal"
+    },
+    "attestation_rewards_wei": {
+      "@id": "galaxy:attestation_rewards_wei",
+      "@type": "xsd:string"
+    },
+    "block_proposer_rewards_eth": {
+      "@id": "galaxy:block_proposer_rewards_eth",
+      "@type": "xsd:decimal"
+    },
+    "block_proposer_rewards_wei": {
+      "@id": "galaxy:block_proposer_rewards_wei",
+      "@type": "xsd:string"
+    },
+    "sync_committee_rewards_eth": {
+      "@id": "galaxy:sync_committee_rewards_eth",
+      "@type": "xsd:decimal"
+    },
+    "sync_committee_rewards_wei": {
+      "@id": "galaxy:sync_committee_rewards_wei",
+      "@type": "xsd:string"
+    },
+    "initial_slashing_penalties_eth": {
+      "@id": "galaxy:initial_slashing_penalties_eth",
+      "@type": "xsd:decimal"
+    },
+    "initial_slashing_penalties_wei": {
+      "@id": "galaxy:initial_slashing_penalties_wei",
+      "@type": "xsd:string"
+    },
+    "correlation_slashing_penalties_eth": {
+      "@id": "galaxy:correlation_slashing_penalties_eth",
+      "@type": "xsd:decimal"
+    },
+    "correlation_slashing_penalties_wei": {
+      "@id": "galaxy:correlation_slashing_penalties_wei",
+      "@type": "xsd:string"
+    },
+    "ExecutionReward": "galaxy:ExecutionReward",
+    "is_mev": {
+      "@id": "galaxy:is_mev",
+      "@type": "xsd:boolean"
+    },
+    "mev_relay": {
+      "@id": "galaxy:mev_relay",
+      "@type": "xsd:string"
+    },
+    "recipient": {
+      "@id": "galaxy:recipient",
+      "@type": "xsd:string"
+    },
+    "mev_builder": {
+      "@id": "galaxy:mev_builder",
+      "@type": "xsd:string"
+    },
+    "tx_hash": {
+      "@id": "galaxy:tx_hash",
+      "@type": "xsd:string"
+    },
+    "ConsolidateResponse": "galaxy:ConsolidateResponse",
+    "destination_pubkey": {
+      "@id": "galaxy:destination_pubkey",
+      "@type": "xsd:string"
+    },
+    "consolidation_contract_address": {
+      "@id": "galaxy:consolidation_contract_address",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "galaxy:created_at",
+      "@type": "xsd:string"
+    },
+    "ConsolidateResponseData": "galaxy:ConsolidateResponseData",
+    "source_pubkey": {
+      "@id": "galaxy:source_pubkey",
+      "@type": "xsd:string"
+    },
+    "signer": {
+      "@id": "galaxy:signer",
+      "@container": "@list"
+    },
+    "ConsolidateRequest": "galaxy:ConsolidateRequest",
+    "source_pubkeys": {
+      "@id": "galaxy:source_pubkeys",
+      "@container": "@list"
+    },
+    "ELExitResponse": "galaxy:ELExitResponse",
+    "exit_contract_address": {
+      "@id": "galaxy:exit_contract_address",
+      "@type": "xsd:string"
+    },
+    "ELExitResponseData": "galaxy:ELExitResponseData",
+    "ELExitRequest": "galaxy:ELExitRequest",
+    "ELWithdrawalResponse": "galaxy:ELWithdrawalResponse",
+    "withdrawal_contract_address": {
+      "@id": "galaxy:withdrawal_contract_address",
+      "@type": "xsd:string"
+    },
+    "ELWithdrawalResponseData": "galaxy:ELWithdrawalResponseData",
+    "ELWithdrawalRequest": "galaxy:ELWithdrawalRequest",
+    "ELWithdrawalRequestData": "galaxy:ELWithdrawalRequestData",
+    "TopUpResponse": "galaxy:TopUpResponse",
+    "TopUpResponseBatchData": "galaxy:TopUpResponseBatchData",
+    "TopUpResponseDepositData": "galaxy:TopUpResponseDepositData",
+    "TopUpResponseTransactionData": "galaxy:TopUpResponseTransactionData",
+    "TopUpRequest": "galaxy:TopUpRequest",
+    "TopUpRequestData": "galaxy:TopUpRequestData",
+    "deposit_amount": {
+      "@id": "galaxy:deposit_amount",
+      "@type": "xsd:decimal"
+    },
+    "FeeResponse": "galaxy:FeeResponse",
+    "operation_type": {
+      "@id": "galaxy:operation_type"
+    },
+    "fee_in_ETH": {
+      "@id": "galaxy:fee_in_ETH",
+      "@type": "xsd:decimal"
+    },
+    "fee_in_WEI": {
+      "@id": "galaxy:fee_in_WEI",
+      "@type": "xsd:string"
+    },
+    "retrieved_at": {
+      "@id": "galaxy:retrieved_at",
+      "@type": "xsd:string"
+    },
+    "FeeRequest": "galaxy:FeeRequest",
+    "DepositDataResponse": "galaxy:DepositDataResponse",
+    "DepositDataErrorResponse": "galaxy:DepositDataErrorResponse",
+    "DepositDataErrorMessage": "galaxy:DepositDataErrorMessage",
+    "UpdateFeeRecipientResponse": "galaxy:UpdateFeeRecipientResponse",
+    "UpdateFeeRecipientResponseData": "galaxy:UpdateFeeRecipientResponseData",
+    "UpdateFeeRecipientRequest": "galaxy:UpdateFeeRecipientRequest",
+    "UpdateFeeRecipientData": "galaxy:UpdateFeeRecipientData",
+    "ValidatorMonitoringResponse": "galaxy:ValidatorMonitoringResponse",
+    "validator_monitoring_reference_id": {
+      "@id": "galaxy:validator_monitoring_reference_id",
+      "@type": "xsd:string"
+    },
+    "ValidatorMonitoringRequest": "galaxy:ValidatorMonitoringRequest",
+    "ValidatorMonitoringRequestData": "galaxy:ValidatorMonitoringRequestData",
+    "InternalServerValidatorErrorListResponse": "galaxy:InternalServerValidatorErrorListResponse",
+    "SOLDelegatorRewardsRequest": "galaxy:SOLDelegatorRewardsRequest",
+    "stake_accounts": {
+      "@id": "galaxy:stake_accounts",
+      "@container": "@list"
+    },
+    "DelegatorRewardsInfoResponse": "galaxy:DelegatorRewardsInfoResponse",
+    "DelegatorReward": "galaxy:DelegatorReward",
+    "stake_account": {
+      "@id": "galaxy:stake_account",
+      "@type": "xsd:string"
+    },
+    "validator_address": {
+      "@id": "galaxy:validator_address",
+      "@type": "xsd:string"
+    },
+    "total_sol": {
+      "@id": "galaxy:total_sol",
+      "@type": "xsd:decimal"
+    },
+    "total_lamports": {
+      "@id": "galaxy:total_lamports",
+      "@type": "xsd:integer"
+    },
+    "apy": {
+      "@id": "galaxy:apy",
+      "@type": "xsd:decimal"
+    },
+    "block_rewards_apy": {
+      "@id": "galaxy:block_rewards_apy",
+      "@type": "xsd:decimal"
+    },
+    "total_apy": {
+      "@id": "galaxy:total_apy",
+      "@type": "xsd:decimal"
+    },
+    "total_accumulated_sol": {
+      "@id": "galaxy:total_accumulated_sol",
+      "@type": "xsd:decimal"
+    },
+    "total_accumulated_lamports": {
+      "@id": "galaxy:total_accumulated_lamports",
+      "@type": "xsd:integer"
+    },
+    "accumulated_gross_block_rewards_sol": {
+      "@id": "galaxy:accumulated_gross_block_rewards_sol",
+      "@type": "xsd:decimal"
+    },
+    "accumulated_gross_block_rewards_lamports": {
+      "@id": "galaxy:accumulated_gross_block_rewards_lamports",
+      "@type": "xsd:integer"
+    },
+    "accumulated_net_block_rewards_sol": {
+      "@id": "galaxy:accumulated_net_block_rewards_sol",
+      "@type": "xsd:decimal"
+    },
+    "accumulated_net_block_rewards_lamports": {
+      "@id": "galaxy:accumulated_net_block_rewards_lamports",
+      "@type": "xsd:integer"
+    },
+    "AccumulatedReward": "galaxy:AccumulatedReward",
+    "accumulated_sol": {
+      "@id": "galaxy:accumulated_sol",
+      "@type": "xsd:decimal"
+    },
+    "accumulated_lamports": {
+      "@id": "galaxy:accumulated_lamports",
+      "@type": "xsd:integer"
+    },
+    "RewardBreakdown": "galaxy:RewardBreakdown",
+    "balance": {
+      "@id": "galaxy:balance",
+      "@type": "xsd:decimal"
+    },
+    "total_epoch_sol": {
+      "@id": "galaxy:total_epoch_sol",
+      "@type": "xsd:decimal"
+    },
+    "total_epoch_lamports": {
+      "@id": "galaxy:total_epoch_lamports",
+      "@type": "xsd:integer"
+    },
+    "total_epoch_gross_block_rewards_sol": {
+      "@id": "galaxy:total_epoch_gross_block_rewards_sol",
+      "@type": "xsd:decimal"
+    },
+    "total_epoch_gross_block_rewards_lamports": {
+      "@id": "galaxy:total_epoch_gross_block_rewards_lamports",
+      "@type": "xsd:integer"
+    },
+    "total_epoch_net_block_rewards_sol": {
+      "@id": "galaxy:total_epoch_net_block_rewards_sol",
+      "@type": "xsd:decimal"
+    },
+    "total_epoch_net_block_rewards_lamports": {
+      "@id": "galaxy:total_epoch_net_block_rewards_lamports",
+      "@type": "xsd:integer"
+    },
+    "RewardItem": "galaxy:RewardItem",
+    "rewards_sol": {
+      "@id": "galaxy:rewards_sol",
+      "@type": "xsd:decimal"
+    },
+    "rewards_lamports": {
+      "@id": "galaxy:rewards_lamports",
+      "@type": "xsd:integer"
+    },
+    "DelegatorInfoListRequest": "galaxy:DelegatorInfoListRequest",
+    "participant": {
+      "@id": "galaxy:participant",
+      "@type": "xsd:string"
+    },
+    "DelegatorInfoListResponse": "galaxy:DelegatorInfoListResponse",
+    "ValidatorInfo": "galaxy:ValidatorInfo",
+    "address": {
+      "@id": "galaxy:address",
+      "@type": "xsd:string"
+    },
+    "ProvisionInfo": "galaxy:ProvisionInfo",
+    "id": {
+      "@id": "galaxy:id",
+      "@type": "xsd:string"
+    },
+    "DelegatorInfoResponse": "galaxy:DelegatorInfoResponse",
+    "balance_in_lamports": {
+      "@id": "galaxy:balance_in_lamports",
+      "@type": "xsd:decimal"
+    },
+    "balance_in_sol": {
+      "@id": "galaxy:balance_in_sol",
+      "@type": "xsd:decimal"
+    },
+    "validator_info": {
+      "@id": "galaxy:validator_info",
+      "@type": "@id"
+    },
+    "provision_info": {
+      "@id": "galaxy:provision_info",
+      "@type": "@id"
+    },
+    "SolValidatorInfoResponse": "galaxy:SolValidatorInfoResponse",
+    "validator_status": {
+      "@id": "galaxy:validator_status",
+      "@type": "xsd:string"
+    },
+    "delegated_balance": {
+      "@id": "galaxy:delegated_balance",
+      "@type": "xsd:decimal"
+    },
+    "Delegators": "galaxy:Delegators"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Galaxy API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Galaxy's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/galaxy-com-ethereum-staking-openapi.yml, openapi/galaxy-com-solana-staking-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/galaxy-com-ethereum-staking-openapi.yml",
+    "openapi/galaxy-com-solana-staking-openapi.yml"
+  ]
+}

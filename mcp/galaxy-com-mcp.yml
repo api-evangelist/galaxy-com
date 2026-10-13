@@ -1,0 +1,166 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/galaxy-com-ethereum-staking-openapi.yml
+- openapi/galaxy-com-solana-staking-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: 'No MCP server was found. The pre-flight posted tools/list to /mcp on api.galaxy.com, www.galaxy.com, am.galaxy.com, interactive.galaxy.com;
+  verdict opaque (https://www.galaxy.com/mcp answered 403: the edge authenticates before it routes, which proves nothing either way). Candidate
+  tools below are derived from the 30 operation(s) in the provider''s own OpenAPI (30 listed); they describe what a server WOULD expose, not one
+  that exists.'
+tools:
+- name: validators
+  operationId: validators
+  method: POST
+  path: /v1/ethereum/validators
+  description: Provision Validators
+- name: create_delegators_stake-account
+  operationId: POST /v1/solana/delegators/stake-account
+  method: POST
+  path: /v1/solana/delegators/stake-account
+  description: Stake Account Creation
+- name: exit
+  operationId: exit
+  method: POST
+  path: /v1/ethereum/validators/exit
+  description: Exit Validators
+- name: create_delegators_delegate
+  operationId: POST /v1/solana/delegators/delegate
+  method: POST
+  path: /v1/solana/delegators/delegate
+  description: Delegation
+- name: pre_signed
+  operationId: pre-signed
+  method: POST
+  path: /v1/ethereum/validators/exit/pre-signed
+  description: Derive Pre-Signed Exit Message
+- name: create_delegators_undelegate
+  operationId: POST /v1/solana/delegators/undelegate
+  method: POST
+  path: /v1/solana/delegators/undelegate
+  description: Undelegation
+- name: get_validators
+  operationId: get-validators
+  method: GET
+  path: /v1/ethereum/{network}/validators
+  description: Get All Validators or by Staking Reference ID
+- name: create_delegators_withdraw
+  operationId: POST /v1/solana/delegators/withdraw
+  method: POST
+  path: /v1/solana/delegators/withdraw
+  description: Withdrawals
+- name: get_validator
+  operationId: get-validator
+  method: GET
+  path: /v1/ethereum/{network}/validators/{pubkey}
+  description: Get a Single Validator
+- name: create_delegators_split
+  operationId: POST /v1/solana/delegators/split
+  method: POST
+  path: /v1/solana/delegators/split
+  description: Split
+- name: validators_summary
+  operationId: validators-summary
+  method: GET
+  path: /v1/ethereum/{network}/validators/summary
+  description: Get Validators Summary
+- name: create_delegators_merge
+  operationId: POST /v1/solana/delegators/merge
+  method: POST
+  path: /v1/solana/delegators/merge
+  description: Merge
+- name: withdrawals
+  operationId: withdrawals
+  method: POST
+  path: /v1/ethereum/validators/withdrawals
+  description: Withdrawals
+- name: create_delegators_transfer
+  operationId: POST /v1/solana/delegators/transfer
+  method: POST
+  path: /v1/solana/delegators/transfer
+  description: Transfer
+- name: rewards
+  operationId: rewards
+  method: POST
+  path: /v1/ethereum/validators/rewards
+  description: Rewards
+- name: create_delegators_signed-transaction
+  operationId: POST /v1/solana/delegators/signed-transaction
+  method: POST
+  path: /v1/solana/delegators/signed-transaction
+  description: Submit Signed Transactions
+- name: consolidate
+  operationId: consolidate
+  method: POST
+  path: /v1/ethereum/validators/consolidate
+  description: Consolidate Validators
+- name: create_delegators_transaction
+  operationId: POST /v1/solana/delegators/transaction
+  method: POST
+  path: /v1/solana/delegators/transaction
+  description: Submit Transaction Hash
+- name: el_triggerable_exit
+  operationId: el-triggerable-exit
+  method: POST
+  path: /v1/ethereum/validators/el-triggerable-exit
+  description: Exit Validators via the Execution Layer
+- name: get_soldelegator_accrued_rewards
+  operationId: getSOLDelegatorAccruedRewards
+  method: POST
+  path: /v1/solana/delegators/rewards
+  description: Rewards
+- name: el_triggerable_withdrawal
+  operationId: el-triggerable-withdrawal
+  method: POST
+  path: /v1/ethereum/validators/el-triggerable-withdrawal
+  description: Partially Withdraw Validator Balances via the Execution Layer
+- name: get_multiple_delegators
+  operationId: getMultipleDelegators
+  method: POST
+  path: /v1/solana/delegators
+  description: Retrieve Multiple Delegators
+- name: topup
+  operationId: topup
+  method: POST
+  path: /v1/ethereum/validators/topup
+  description: Top Up Validators
+- name: get_single_delegator
+  operationId: getSingleDelegator
+  method: GET
+  path: /v1/solana/{network}/delegators/{stake_account}
+  description: Get a Single Delegator
+- name: fee
+  operationId: fee
+  method: POST
+  path: /v1/ethereum/validators/fee
+  description: Get Fees
+- name: get_validator_info
+  operationId: getValidatorInfo
+  method: GET
+  path: /v1/solana/{network}/validators/{validator_address}
+  description: Validator Information
+- name: deposit_data
+  operationId: deposit-data
+  method: GET
+  path: /v1/ethereum/validators/deposit-data
+  description: Get Deposit Data
+- name: create_validator_monitoring_update
+  operationId: createValidatorMonitoringUpdate
+  method: POST
+  path: /v1/solana/delegators/monitoring
+  description: Delegator Monitoring
+- name: update_fee_recipient
+  operationId: update-fee-recipient
+  method: POST
+  path: /v1/ethereum/validators/update-fee-recipient
+  description: Update Fee Recipient Address
+- name: monitoring
+  operationId: monitoring
+  method: POST
+  path: /v1/ethereum/validators/monitoring
+  description: Validator Monitoring

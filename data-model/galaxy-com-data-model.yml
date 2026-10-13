@@ -1,0 +1,365 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/galaxy-com-ethereum-staking-openapi.yml
+- openapi/galaxy-com-solana-staking-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 78
+  entities_in_spec: 78
+  relationships: 41
+entities:
+- name: AccumulatedReward
+  fields: 3
+- name: BatchData
+  fields: 3
+  description: A block that contains validator batches. Each batch includes details of 250 validators and the associated
+    funding transaction.
+- name: ConsensusAccumulatedReward
+  fields: 3
+- name: ConsensusReward
+  fields: 13
+- name: ConsolidateRequest
+  fields: 4
+- name: ConsolidateResponse
+  fields: 6
+- name: ConsolidateResponseData
+  fields: 3
+- name: DelegatorInfoListRequest
+  fields: 5
+- name: DelegatorInfoListResponse
+  fields: 4
+- name: DelegatorInfoResponse
+  fields: 7
+- name: DelegatorReward
+  fields: 15
+- name: DelegatorRewardsInfoResponse
+  fields: 6
+- name: Delegators
+  fields: 3
+  description: A list containing the information of the delegator addresses that will be monitored on the staking
+    platform.
+- name: DepositData
+  fields: 8
+  description: An array of validator details in this batch.
+- name: DepositDataErrorMessage
+  fields: 2
+- name: DepositDataErrorResponse
+  fields: 2
+- name: DepositDataResponse
+  fields: 9
+- name: DepositTransaction
+  fields: 3
+  description: The JSON object that contains the funding transaction details of all validators belonging to this
+    batch.
+- name: ELExitRequest
+  fields: 5
+- name: ELExitResponse
+  fields: 5
+- name: ELExitResponseData
+  fields: 4
+- name: ELWithdrawalRequest
+  fields: 4
+- name: ELWithdrawalRequestData
+  fields: 3
+- name: ELWithdrawalResponse
+  fields: 5
+- name: ELWithdrawalResponseData
+  fields: 5
+- name: ErrorMessage
+  fields: 2
+  description: An array of errors that resulted from this request.
+- name: EthEpochLevelInfoRequest
+  fields: 6
+- name: EthEpochLevelInfoResponseWithValidatorData
+  fields: 6
+- name: EthEpochLevelInfoResponseWithWithdrawalSlotInfo
+  fields: 6
+- name: ExecutionAccumulatedReward
+  fields: 3
+- name: ExecutionReward
+  fields: 10
+- name: FeeRequest
+  fields: 2
+- name: FeeResponse
+  fields: 5
+- name: InternalServerErrorMessage
+  fields: 2
+  description: An array of errors that resulted from this request.
+- name: InternalServerInfoErrorMessage
+  fields: 1
+  description: An array of errors that resulted from this request.
+- name: InternalServerStakingErrorListResponse
+  fields: 2
+- name: InternalServerValidatorErrorListResponse
+  fields: 1
+- name: PreSignedExitDBO
+  fields: 6
+  description: An array which contains the details of the validators to be exited.
+- name: PresignedExitData
+  fields: 2
+  description: This JSON object will be populated if the include_presigned_exit query parameter is set to “true”
+    and the validator is in active status for at-least 256 epochs. Otherwise, it will be set to null.
+- name: ProvisionInfo
+  fields: 2
+  description: JSON object that contains the registration details of the delegator.
+- name: RewardBreakdown
+  fields: 10
+  description: Rewards for a given epoch/period.
+- name: RewardItem
+  fields: 3
+- name: RewardsBreakdown
+  fields: 7
+  description: An array that contains breakdown of rewards depending on the “rollup_type” parameter specified in
+    the request.
+- name: SOLDelegatorRewardsRequest
+  fields: 5
+- name: SolValidatorInfoResponse
+  fields: 7
+- name: StakingErrorListResponse
+  fields: 2
+- name: StakingRequest
+  fields: 10
+- name: StakingRequestInfo
+  fields: 2
+  description: JSON object that contains the staking request id and validators provisioned date and time. This should
+    be set to ‘null’ for externally provisioned validators.
+- name: StakingResponse
+  fields: 9
+- name: StatusHistoryData
+  fields: 2
+  description: An array that contains the state transition of the validator.
+- name: SummaryData
+  fields: 2
+  description: An array that contains validators summary.
+- name: TopUpRequest
+  fields: 3
+- name: TopUpRequestData
+  fields: 2
+- name: TopUpResponse
+  fields: 3
+- name: TopUpResponseBatchData
+  fields: 3
+- name: TopUpResponseDepositData
+  fields: 8
+  description: An array of validator details in this batch.
+- name: TopUpResponseTransactionData
+  fields: 3
+  description: The JSON object that contains the funding transaction details of all validators belonging to this
+    batch.
+- name: UpdateFeeRecipientData
+  fields: 3
+- name: UpdateFeeRecipientRequest
+  fields: 4
+- name: UpdateFeeRecipientResponse
+  fields: 3
+- name: UpdateFeeRecipientResponseData
+  fields: 3
+- name: ValidatorAddressWiseData
+  fields: 7
+  description: An array that contains the breakdown.
+- name: ValidatorErrorListResponse
+  fields: 1
+- name: ValidatorErrorMessage
+  fields: 2
+  description: An array of errors that resulted from this request.
+- name: ValidatorExitData
+  fields: 4
+  description: An array which contains the details of the validators to be exited.
+- name: ValidatorExitRequest
+  fields: 7
+- name: ValidatorExitResponse
+  fields: 3
+- name: ValidatorInfo
+  fields: 1
+  description: JSON object that represents the validator for which the given stake account is attached to.
+- name: ValidatorInfoData
+  fields: 18
+  description: An array that contains the details about validators.
+- name: ValidatorInfoResponse
+  fields: 19
+- name: ValidatorMonitoringRequest
+  fields: 2
+- name: ValidatorMonitoringRequestData
+  fields: 2
+- name: ValidatorMonitoringResponse
+  fields: 1
+- name: ValidatorPreSignedExitResponse
+  fields: 2
+- name: ValidatorsInfoResponse
+  fields: 4
+- name: ValidatorsSummaryResponse
+  fields: 3
+- name: VoluntaryExitData
+  fields: 3
+  description: JSON object that contains on demand exit related information if the validator has initiated the voluntary
+    exit. Otherwise, it will be null.
+- name: WithdrawalSlotInfoType1
+  fields: 11
+  description: An array that contains the breakdown.
+relationships:
+- from: StakingResponse
+  to: BatchData
+  type: has_many
+  via: data
+- from: BatchData
+  to: DepositData
+  type: has_many
+  via: deposit_data
+- from: BatchData
+  to: DepositTransaction
+  type: has_one
+  via: deposit_transaction
+- from: StakingErrorListResponse
+  to: ErrorMessage
+  type: has_many
+  via: errors
+- from: InternalServerStakingErrorListResponse
+  to: InternalServerErrorMessage
+  type: has_many
+  via: errors
+- from: ValidatorExitResponse
+  to: ValidatorExitData
+  type: has_many
+  via: data
+- from: ValidatorPreSignedExitResponse
+  to: PreSignedExitDBO
+  type: has_many
+  via: data
+- from: ValidatorsInfoResponse
+  to: ValidatorInfoData
+  type: has_many
+  via: data
+- from: ValidatorInfoData
+  to: StatusHistoryData
+  type: has_many
+  via: status_history
+- from: ValidatorInfoData
+  to: VoluntaryExitData
+  type: has_one
+  via: voluntary_exit
+- from: ValidatorInfoData
+  to: PresignedExitData
+  type: has_one
+  via: presigned_exit
+- from: ValidatorInfoData
+  to: StakingRequestInfo
+  type: has_one
+  via: staking_request_info
+- from: ValidatorErrorListResponse
+  to: ValidatorErrorMessage
+  type: has_many
+  via: error
+- from: ValidatorInfoResponse
+  to: StatusHistoryData
+  type: has_many
+  via: status_history
+- from: ValidatorInfoResponse
+  to: VoluntaryExitData
+  type: has_one
+  via: voluntary_exit
+- from: ValidatorInfoResponse
+  to: PresignedExitData
+  type: has_one
+  via: presigned_exit
+- from: ValidatorInfoResponse
+  to: StakingRequestInfo
+  type: has_one
+  via: staking_request_info
+- from: ValidatorsSummaryResponse
+  to: SummaryData
+  type: has_many
+  via: data
+- from: EthEpochLevelInfoResponseWithWithdrawalSlotInfo
+  to: WithdrawalSlotInfoType1
+  type: has_many
+  via: data
+- from: EthEpochLevelInfoResponseWithValidatorData
+  to: ValidatorAddressWiseData
+  type: has_many
+  via: data
+- from: ValidatorAddressWiseData
+  to: RewardsBreakdown
+  type: has_many
+  via: rewards_breakdown
+- from: ConsolidateResponse
+  to: ConsolidateResponseData
+  type: has_many
+  via: data
+- from: ELExitResponse
+  to: ELExitResponseData
+  type: has_many
+  via: data
+- from: ELWithdrawalResponse
+  to: ELWithdrawalResponseData
+  type: has_many
+  via: data
+- from: ELWithdrawalRequest
+  to: ELWithdrawalRequestData
+  type: has_many
+  via: data
+- from: TopUpResponse
+  to: TopUpResponseBatchData
+  type: has_many
+  via: data
+- from: TopUpResponseBatchData
+  to: TopUpResponseDepositData
+  type: has_many
+  via: deposit_data
+- from: TopUpResponseBatchData
+  to: TopUpResponseTransactionData
+  type: has_many
+  via: deposit_transaction
+- from: TopUpRequest
+  to: TopUpRequestData
+  type: has_many
+  via: data
+- from: DepositDataResponse
+  to: BatchData
+  type: has_many
+  via: data
+- from: DepositDataErrorResponse
+  to: DepositDataErrorMessage
+  type: has_many
+  via: errors
+- from: UpdateFeeRecipientResponse
+  to: UpdateFeeRecipientResponseData
+  type: has_many
+  via: data
+- from: UpdateFeeRecipientRequest
+  to: UpdateFeeRecipientData
+  type: has_many
+  via: data
+- from: ValidatorMonitoringRequest
+  to: ValidatorMonitoringRequestData
+  type: has_many
+  via: data
+- from: InternalServerValidatorErrorListResponse
+  to: InternalServerErrorMessage
+  type: has_many
+  via: error
+- from: DelegatorRewardsInfoResponse
+  to: DelegatorReward
+  type: has_many
+  via: data
+- from: DelegatorReward
+  to: AccumulatedReward
+  type: has_many
+  via: accumulated_rewards
+- from: DelegatorReward
+  to: RewardBreakdown
+  type: has_many
+  via: rewards_breakdown
+- from: RewardBreakdown
+  to: RewardItem
+  type: has_many
+  via: rewards
+- from: DelegatorInfoResponse
+  to: ValidatorInfo
+  type: has_one
+  via: validator_info
+- from: DelegatorInfoResponse
+  to: ProvisionInfo
+  type: has_one
+  via: provision_info

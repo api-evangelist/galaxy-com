@@ -1,0 +1,429 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/galaxy-com-ethereum-staking-openapi.yml
+- openapi/galaxy-com-solana-staking-openapi.yml
+vocabulary:
+  name: Galaxy Domain Vocabulary
+  description: 'Terms declared by Galaxy''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: Solana
+    definition: The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business
+      validations on all POST request messages to ensure that each request contains accurate and complete information. The business validation
+      failures will be responded to with an HTTP 400, while any internal processing errors identified will be responded to with an HTTP 500.
+    tags:
+    - Resource Group
+    source: openapi/galaxy-com-solana-staking-openapi.yml
+  - term: Staking Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, withdrawal_credentials_type, amounts_unit, amounts, validator_count,
+      withdrawal_address, fee_recipient_address, region, account.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/StakingRequest
+  - term: Staking Response
+    definition: 'Object declared by the contract with fields: client_req_id, staking_ref_id, network, withdrawal_credentials_type, withdrawal_address,
+      fee_recipient_address, region, provisioned_at, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/StakingResponse
+  - term: Staking Response Batch
+    definition: A block that contains validator batches. Each batch includes details of 250 validators and the associated funding transaction.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/BatchData
+  - term: Staking Response Batch Deposit Data
+    definition: An array of validator details in this batch.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/DepositData
+  - term: Staking Response Batch Deposit Transaction
+    definition: The JSON object that contains the funding transaction details of all validators belonging to this batch.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/DepositTransaction
+  - term: Error List
+    definition: 'Object declared by the contract with fields: client_req_id, errors.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/StakingErrorListResponse
+  - term: Error Message
+    definition: An array of errors that resulted from this request.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ErrorMessage
+  - term: Error List
+    definition: 'Object declared by the contract with fields: client_req_id, errors.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/InternalServerStakingErrorListResponse
+  - term: Error Message
+    definition: An array of errors that resulted from this request.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/InternalServerErrorMessage
+  - term: Validator Exit Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, type, pubkeys, validator_indexes, withdrawal_address, validator_count.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorExitRequest
+  - term: Validator Exit Response
+    definition: 'Object declared by the contract with fields: client_req_id, network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorExitResponse
+  - term: Validator Exit Data
+    definition: An array which contains the details of the validators to be exited.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorExitData
+  - term: Validator Pre-signed Exit Response
+    definition: 'Object declared by the contract with fields: network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorPreSignedExitResponse
+  - term: Validator Pre-signed Exit Data
+    definition: An array which contains the details of the validators to be exited.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/PreSignedExitDBO
+  - term: Validator Info Response
+    definition: 'Object declared by the contract with fields: network, page, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorsInfoResponse
+  - term: Validator Info Data
+    definition: An array that contains the details about validators.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorInfoData
+  - term: Status History Data
+    definition: An array that contains the state transition of the validator.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/StatusHistoryData
+  - term: Voluntary Exit Data
+    definition: JSON object that contains on demand exit related information if the validator has initiated the voluntary exit. Otherwise, it
+      will be null.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/VoluntaryExitData
+  - term: Pre-signed Exit Data
+    definition: This JSON object will be populated if the include_presigned_exit query parameter is set to “true” and the validator is in active
+      status for at-least 256 epochs. Otherwise, it will be set to null.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/PresignedExitData
+  - term: Staking Request Data
+    definition: JSON object that contains the staking request id and validators provisioned date and time. This should be set to ‘null’ for externally
+      provisioned validators.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/StakingRequestInfo
+  - term: Validator Error Response
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorErrorListResponse
+  - term: Validator Error Message
+    definition: An array of errors that resulted from this request.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorErrorMessage
+  - term: Error Message
+    definition: An array of errors that resulted from this request.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/InternalServerInfoErrorMessage
+  - term: Validator Info
+    definition: 'Object declared by the contract with fields: network, last_monitored_epoch, epoch, status, pubkey, region, validator_index, withdrawal_credential_type,
+      withdrawal_address, fee_recipient_address, estimated_activation_at, estimated_exit_at. (7 more)'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorInfoResponse
+  - term: Validator Summary Response
+    definition: 'Object declared by the contract with fields: network, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorsSummaryResponse
+  - term: Summary Data
+    definition: An array that contains validators summary.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/SummaryData
+  - term: Rewards Request
+    definition: 'Object declared by the contract with fields: network, start, end, rollup_type, pubkeys, cl_rewards_breakdown.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/EthEpochLevelInfoRequest
+  - term: Withdrawals
+    definition: 'Object declared by the contract with fields: network, start, end, page, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/EthEpochLevelInfoResponseWithWithdrawalSlotInfo
+  - term: Withdrawals
+    definition: An array that contains the breakdown.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/WithdrawalSlotInfoType1
+  - term: Validator Rewards
+    definition: 'Object declared by the contract with fields: network, start, end, page, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/EthEpochLevelInfoResponseWithValidatorData
+  - term: Validator Rewards
+    definition: An array that contains the breakdown.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorAddressWiseData
+  - term: ConsensusAccumulatedReward
+    definition: 'Object declared by the contract with fields: type, accumulated_eth, accumulated_wei.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ConsensusAccumulatedReward
+  - term: ExecutionAccumulatedReward
+    definition: 'Object declared by the contract with fields: type, accumulated_eth, accumulated_wei.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ExecutionAccumulatedReward
+  - term: RewardsBreakdown
+    definition: An array that contains breakdown of rewards depending on the “rollup_type” parameter specified in the request.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/RewardsBreakdown
+  - term: RewardsInfo
+    definition: An array that contains consensus and execution layer rewards for the given epoch.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/RewardsInfo
+  - term: ConsensusReward
+    definition: 'Object declared by the contract with fields: type, rewards_eth, rewards_wei, attestation_rewards_eth, attestation_rewards_wei,
+      block_proposer_rewards_eth, block_proposer_rewards_wei, sync_committee_rewards_eth, sync_committee_rewards_wei, initial_slashing_penalties_eth,
+      initial_slashing_penalties_wei, correlation_slashing_penalties_eth. (1 more)'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ConsensusReward
+  - term: ExecutionReward
+    definition: 'Object declared by the contract with fields: type, rewards_eth, rewards_wei, is_mev, mev_relay, recipient, mev_builder, slot,
+      block, tx_hash.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ExecutionReward
+  - term: Consolidate Response
+    definition: 'Object declared by the contract with fields: client_req_id, network, destination_pubkey, consolidation_contract_address, data,
+      created_at.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ConsolidateResponse
+  - term: Consolidate Response Data
+    definition: 'Object declared by the contract with fields: source_pubkey, contract_call_data, signer.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ConsolidateResponseData
+  - term: Consolidate Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, source_pubkeys, destination_pubkey.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ConsolidateRequest
+  - term: EL Exit Response
+    definition: 'Object declared by the contract with fields: client_req_id, network, exit_contract_address, data, created_at.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELExitResponse
+  - term: EL Exit Response Data
+    definition: 'Object declared by the contract with fields: pubkey, validator_index, contract_call_data, signer.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELExitResponseData
+  - term: EL Exit Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, type, pubkeys, validator_indexes.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELExitRequest
+  - term: EL Withdrawal Response
+    definition: 'Object declared by the contract with fields: client_req_id, network, withdrawal_contract_address, data, created_at.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELWithdrawalResponse
+  - term: EL Withdrawal Response Data
+    definition: 'Object declared by the contract with fields: pubkey, validator_index, amount, contract_call_data, signer.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELWithdrawalResponseData
+  - term: EL Withdrawal Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, type, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELWithdrawalRequest
+  - term: EL Withdrawal Request Data
+    definition: 'Object declared by the contract with fields: pubkey, validator_index, amount.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ELWithdrawalRequestData
+  - term: Top Up Response
+    definition: 'Object declared by the contract with fields: client_req_id, network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpResponse
+  - term: Top Up Response Batch Data
+    definition: 'Object declared by the contract with fields: batch_id, deposit_data, deposit_transaction.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpResponseBatchData
+  - term: Top Up Response Deposit Data
+    definition: An array of validator details in this batch.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpResponseDepositData
+  - term: Top Up Response Transaction Data
+    definition: The JSON object that contains the funding transaction details of all validators belonging to this batch.
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpResponseTransactionData
+  - term: Top Up Request
+    definition: 'Object declared by the contract with fields: client_req_id, network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpRequest
+  - term: Top Up Request Data
+    definition: 'Object declared by the contract with fields: pubkey, deposit_amount.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/TopUpRequestData
+  - term: FeeResponse
+    definition: 'Object declared by the contract with fields: network, operation_type, fee_in_ETH, fee_in_WEI, retrieved_at.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/FeeResponse
+  - term: Fee Request
+    definition: 'Object declared by the contract with fields: network, operation_type.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/FeeRequest
+  - term: Staking Response
+    definition: 'Object declared by the contract with fields: client_req_id, staking_ref_id, network, withdrawal_credentials_type, withdrawal_address,
+      fee_recipient_address, region, provisioned_at, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/DepositDataResponse
+  - term: DepositDataErrorResponse
+    definition: 'Object declared by the contract with fields: client_req_id, errors.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/DepositDataErrorResponse
+  - term: DepositDataErrorMessage
+    definition: 'Object declared by the contract with fields: code, message.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/DepositDataErrorMessage
+  - term: UpdateFeeRecipientResponse
+    definition: 'Object declared by the contract with fields: client_req_id, network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/UpdateFeeRecipientResponse
+  - term: UpdateFeeRecipientData
+    definition: 'Object declared by the contract with fields: pubkey, validator_index, fee_recipient_address.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/UpdateFeeRecipientResponseData
+  - term: UpdateFeeRecipientRequest
+    definition: 'Object declared by the contract with fields: client_req_id, network, type, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/UpdateFeeRecipientRequest
+  - term: UpdateFeeRecipientData
+    definition: 'Object declared by the contract with fields: pubkey, validator_index, fee_recipient_address.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/UpdateFeeRecipientData
+  - term: ValidatorMonitoringResponse
+    definition: 'Object declared by the contract with fields: validator_monitoring_reference_id.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorMonitoringResponse
+  - term: ValidatorMonitoringRequest
+    definition: 'Object declared by the contract with fields: network, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorMonitoringRequest
+  - term: ValidatorMonitoringRequestData
+    definition: 'Object declared by the contract with fields: pubkey, account.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/ValidatorMonitoringRequestData
+  - term: Validator Error Response
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-ethereum-staking-openapi.yml#/components/schemas/InternalServerValidatorErrorListResponse
+  - term: SOLDelegatorRewardsRequest
+    definition: 'Object declared by the contract with fields: network, rollup_type, start, end, stake_accounts.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/SOLDelegatorRewardsRequest
+  - term: DelegatorRewardsInfoResponse
+    definition: 'Object declared by the contract with fields: network, start, end, page, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorRewardsInfoResponse
+  - term: DelegatorReward
+    definition: 'Object declared by the contract with fields: stake_account, validator_address, total_sol, total_lamports, apy, block_rewards_apy,
+      total_apy, total_accumulated_sol, total_accumulated_lamports, accumulated_gross_block_rewards_sol, accumulated_gross_block_rewards_lamports,
+      accumulated_net_block_rewards_sol. (3 more)'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorReward
+  - term: AccumulatedReward
+    definition: 'Object declared by the contract with fields: accumulated_sol, accumulated_lamports, type.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/AccumulatedReward
+  - term: RewardBreakdown
+    definition: Rewards for a given epoch/period.
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/RewardBreakdown
+  - term: RewardItem
+    definition: 'Object declared by the contract with fields: rewards_sol, rewards_lamports, type.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/RewardItem
+  - term: DelegatorInfoListRequest
+    definition: 'Object declared by the contract with fields: network, participant, account, status, stake_accounts.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoListRequest
+  - term: DelegatorInfoListResponse
+    definition: 'Object declared by the contract with fields: network, page, total, data.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoListResponse
+  - term: ValidatorInfo
+    definition: JSON object that represents the validator for which the given stake account is attached to.
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/ValidatorInfo
+  - term: ProvisionInfo
+    definition: JSON object that contains the registration details of the delegator.
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/ProvisionInfo
+  - term: DelegatorInfoResponse
+    definition: 'Object declared by the contract with fields: network, stake_account, status, balance_in_lamports, balance_in_sol, validator_info,
+      provision_info.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/DelegatorInfoResponse
+  - term: SolValidatorInfoResponse
+    definition: 'Object declared by the contract with fields: network, apy, block_rewards_apy, total_apy, validator_address, validator_status,
+      delegated_balance.'
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/SolValidatorInfoResponse
+  - term: Delegators
+    definition: A list containing the information of the delegator addresses that will be monitored on the staking platform.
+    tags:
+    - Object
+    source: openapi/galaxy-com-solana-staking-openapi.yml#/components/schemas/Delegators

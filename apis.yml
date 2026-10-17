@@ -83,17 +83,15 @@ common:
 - type: X
   url: https://twitter.com/GalaxyHQ
 apis:
-- aid: galaxy-com:galaxy-ethereum-staking-api
-  name: Galaxy Ethereum Staking API
-  description: 'Programmatic Ethereum staking with Galaxy: provision validators and deposit data, exits (including pre-signed and EL-triggerable), withdrawals, consolidation, top-ups, fee recipient updates, rewards and validator status/monitoring.'
+- aid: galaxy-com:galaxy-com-ethereum-api
+  name: Galaxy Ethereum API
+  description: The Ethereum API from Galaxy — 16 operation(s) for ethereum.
   humanURL: https://docs.staking.galaxy.com/ethereum/ethereum
   tags:
-  - Staking
   - Ethereum
-  - Validators
   properties:
   - type: OpenAPI
-    url: openapi/galaxy-com-ethereum-staking-openapi.yml
+    url: openapi/galaxy-com-ethereum-api-openapi.yml
   - type: Documentation
     url: https://docs.staking.galaxy.com/ethereum/ethereum
   - type: Authentication
@@ -110,21 +108,51 @@ apis:
     url: json-schema/galaxy-com-validator-exit-request-schema.json
   - type: JSONSchema
     url: json-schema/galaxy-com-eth-epoch-level-info-request-schema.json
-- aid: galaxy-com:galaxy-solana-staking-api
-  name: Galaxy Solana Staking API
-  description: 'Programmatic Solana staking with Galaxy: create stake accounts, delegate, undelegate, withdraw, split, merge and transfer stake, submit signed transactions, and read delegator rewards, delegator and validator info.'
-  humanURL: https://docs.staking.galaxy.com/solana/solana
-  tags:
-  - Staking
-  - Solana
-  - Delegation
-  properties:
-  - type: OpenAPI
-    url: openapi/galaxy-com-solana-staking-openapi.yml
   - type: Documentation
     url: https://docs.staking.galaxy.com/solana/solana
+  - type: JSONSchema
+    url: json-schema/galaxy-com-sol-validator-info-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-delegator-info-list-request-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-delegator-info-list-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-soldelegator-rewards-request-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-delegator-info-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-delegator-rewards-info-response-schema.json
+- aid: galaxy-com:galaxy-com-solana-api
+  name: Galaxy Solana API
+  description: >-
+    The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking
+    platform performs business validations on all POST request messages to ensure that each request contains
+    accurate and complete information. The business validation failures will be responded to with an HTTP
+    400, while any internal processing errors identified will be responded to with an HTTP 500.
+  humanURL: https://docs.staking.galaxy.com/ethereum/ethereum
+  tags:
+  - Solana
+  properties:
+  - type: OpenAPI
+    url: openapi/galaxy-com-solana-api-openapi.yml
+  - type: Documentation
+    url: https://docs.staking.galaxy.com/ethereum/ethereum
   - type: Authentication
     url: https://docs.staking.galaxy.com/authentication-and-authorization
+  - type: JSONSchema
+    url: json-schema/galaxy-com-validator-info-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-staking-request-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-deposit-data-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-staking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-validator-exit-request-schema.json
+  - type: JSONSchema
+    url: json-schema/galaxy-com-eth-epoch-level-info-request-schema.json
+  - type: Documentation
+    url: https://docs.staking.galaxy.com/solana/solana
   - type: JSONSchema
     url: json-schema/galaxy-com-sol-validator-info-response-schema.json
   - type: JSONSchema

@@ -1,0 +1,24 @@
+{
+  "provider": "galaxy-com",
+  "sources": [
+    "galaxy-com-ethereum-staking-openapi.yml",
+    "galaxy-com-solana-staking-openapi.yml"
+  ],
+  "outputs": [
+    "galaxy-com-ethereum-api-openapi.yml",
+    "galaxy-com-solana-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/galaxy-com-ethereum-staking-openapi.yml",
+    "archived openapi/galaxy-com-solana-staking-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "galaxy-com-ethereum-staking-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "galaxy-com-solana-staking-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apis.yml register: written (+2 apis, 2 total)"
+  ],
+  "skipped": []
+}

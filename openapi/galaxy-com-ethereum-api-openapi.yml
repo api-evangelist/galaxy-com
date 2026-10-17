@@ -1,0 +1,2384 @@
+openapi: 3.2.0
+info:
+  title: Specification Ethereum API
+  version: 1.120.0
+  x-assembled-from:
+    note: 'Merged verbatim from the OpenAPI fragments GitBook embeds in the provider docs markdown twins; the published fragments declare only servers: http://localhost (Generated server url), and the docs state no production base URL, so servers is omitted.'
+    sources:
+    - https://docs.staking.galaxy.com/ethereum/ethereum.md
+    - https://docs.staking.galaxy.com/ethereum/models.md
+    retrieved: '2026-10-14'
+security:
+- AuthorizationToken: []
+- APIKey: []
+tags:
+- name: Ethereum
+paths:
+  /v1/ethereum/validators:
+    post:
+      tags:
+      - Ethereum
+      summary: Provision Validators
+      description: The staking endpoint must be invoked by the client to facilitate the staking action. When a request to provision more than 100 validators is received, it will be split into batches, each containing a maximum of 100 validators, and then processed. A total of 1,000 validators can be provisioned per request, across 10 batches.
+      operationId: validators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StakingRequest'
+        required: true
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+  /v1/ethereum/validators/exit:
+    post:
+      tags:
+      - Ethereum
+      summary: Exit Validators
+      description: 'The exit endpoint enables clients to initiate validator withdrawals by broadcasting voluntary exit messages to the beacon chain. It can be enabled in three ways.
+
+        - **Validator Public Keys**: Exit from the network using the specified validator public addresses.
+
+        - **Validator Indexes**: Exit from the network using the specified validator indexes.
+
+        - **Withdrawal Address with Validator Count**: Exit from the network using the specified withdrawal address and validator count. Only type 0x01 validators can be exited using this method.
+
+
+        Each request type can handle exiting only up to 250 validators at once.'
+      operationId: exit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatorExitRequest'
+        required: true
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorExitResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+  /v1/ethereum/validators/exit/pre-signed:
+    post:
+      tags:
+      - Ethereum
+      summary: Derive Pre-Signed Exit Message
+      description: 'The pre-signed exit endpoint enables clients to request pre-signed exit messages for validators. When clients decide to exit their validators, the pre-signed exit message can be independently broadcasted to the consensus node. The validators must be in an active state for at-least 256 epochs in order to derive the encrypted pre-signed exit message.
+
+
+        Before calling this endpoint, the client must create an RSA4096 key pair.This is a separate key pair from the one used for JWT signature generation.The client needs to share the public key from this new key pair with the platform. The platform will use this public key to encrypt the pre-signed exit message with the RSA_OAEP_SHA_256 algorithm.'
+      operationId: pre-signed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatorExitRequest'
+        required: true
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorPreSignedExitResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+  /v1/ethereum/{network}/validators:
+    get:
+      tags:
+      - Ethereum
+      summary: Get All Validators or by Staking Reference ID
+      description: The get all validators endpoint returns the details of the validators provisioned for the given client for the specified network in a paginated manner. This endpoint can also be used to return the details of the validators belonging to the given client for the specified network and staking reference ID. All timestamp fields in the response are provided in UTC timezone.
+      operationId: get-validators
+      parameters:
+      - name: network
+        in: path
+        description: Applicable values are mainnet and hoodi
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: The current page number requested by the client, if not specified, should be defaulted to 1.
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: The number of entries per page, if not presented in the request, should be defaulted to the maximum value of 250.
+        required: false
+        schema:
+          type: string
+      - name: staking_ref_id
+        in: query
+        description: The staking reference ID returned for the staking request.
+        required: false
+        schema:
+          type: string
+      - name: include_presigned_exit
+        in: query
+        description: This indicates whether the pre-signed exit message to be included in the response or not. It’s a boolean parameter, defaulted to "false".
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorsInfoResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+  /v1/ethereum/{network}/validators/{pubkey}:
+    get:
+      tags:
+      - Ethereum
+      summary: Get a Single Validator
+      description: The get single validator endpoint returns the validator information for the specified validator’s public key. All timestamp fields in the response are provided in UTC timezone.
+      operationId: get-validator
+      parameters:
+      - name: network
+        in: path
+        description: Applicable values are mainnet and hoodi.
+        required: true
+        schema:
+          type: string
+      - name: pubkey
+        in: path
+        description: The public key of the validator
+        required: true
+        schema:
+          type: string
+      - name: include_presigned_exit
+        in: query
+        description: This indicates whether the pre-signed exit message to be included in the response or not. It’s a boolean parameter, defaulted to “false”.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorInfoResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+  /v1/ethereum/{network}/validators/summary:
+    get:
+      tags:
+      - Ethereum
+      summary: Get Validators Summary
+      description: This endpoint returns the summary of the validator count by status belonging to the staking partner associated with the given API Key.
+      operationId: validators-summary
+      parameters:
+      - name: network
+        in: path
+        description: Applicable values are mainnet and hoodi.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorsSummaryResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+  /v1/ethereum/validators/withdrawals:
+    post:
+      tags:
+      - Ethereum
+      summary: Withdrawals
+      description: The withdrawals endpoint returns a history of withdrawals (partial and full) from the consensus layer to the execution layer.
+      operationId: withdrawals
+      parameters:
+      - name: page
+        in: query
+        description: The current page number requested by the client, if not specified, should be defaulted to 1.
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: The number of entries per page, if not presented in the request, should be defaulted to the maximum value of 250.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EthEpochLevelInfoRequest'
+        required: true
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EthEpochLevelInfoResponseWithWithdrawalSlotInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+  /v1/ethereum/validators/rewards:
+    post:
+      tags:
+      - Ethereum
+      summary: Rewards
+      description: The rewards endpoint returns accrued rewards on the execution and consensus layers. Rewards can be queried using either an epoch range or a date range, with results returned at the corresponding epoch level. This endpoint returns rewards for validators created via the Provision Validators endpoint as well as validators registered for monitoring. Positive values represent rewards, while negative values represent penalties.
+      operationId: rewards
+      parameters:
+      - name: page
+        in: query
+        description: The current page number requested by the client, if not specified, should be defaulted to 1.
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: The number of entries per page, if not presented in the request, should be defaulted to the maximum value of 250.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EthEpochLevelInfoRequest'
+        required: true
+      responses:
+        '200':
+          description: Sample success response payload. See Response schema below for wrapper
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EthEpochLevelInfoResponseWithValidatorData'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+  /v1/ethereum/validators/consolidate:
+    post:
+      summary: Consolidate Validators
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidateResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: consolidate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsolidateRequest'
+      description: 'The consolidate endpoint enables clients to perform the following actions:
+
+        - Convert withdrawal credential type 0x01 validators to the 0x02 type.
+
+        - Consolidate a type 0x01 or 0x02 validator with a type 0x02 validator by adding the balance of the former to the latter while exiting the former.'
+  /v1/ethereum/validators/el-triggerable-exit:
+    post:
+      summary: Exit Validators via the Execution Layer
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ELExitResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: el-triggerable-exit
+      description: The execution-layer triggerable exit endpoint enables clients to initiate validator exits directly via the validator’s withdrawal address. This functionality is applicable to both withdrawal credential type 0x01 and 0x02 validators.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ELExitRequest'
+  /v1/ethereum/validators/el-triggerable-withdrawal:
+    post:
+      summary: Partially Withdraw Validator Balances via the Execution Layer
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ELWithdrawalResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: el-triggerable-withdrawal
+      description: 'For validators with withdrawal credential type 0x01, any balance in excess of 32 ETH is automatically swept to the validator’s withdrawal address by the protocol. In contrast, 0x02 validators do not support automatic sweeping. Instead, clients can initiate partial withdrawals via the API.
+
+
+        The partial withdrawal amount is computed as the lesser of:
+
+        - the user-specified withdrawal amount, and
+
+        - (current balance − 32 ETH − pending withdrawals)
+
+
+        This ensures that the maximum amount that can be withdrawn from a 0x02 validator is limited to the validator''s effective balance in excess of 32 ETH, excluding any amounts already pending withdrawal.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ELWithdrawalRequest'
+  /v1/ethereum/validators/topup:
+    post:
+      summary: Top Up Validators
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopUpResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: topup
+      description: 'The top-up endpoint allows staking partners to add additional ETH to existing validators with withdrawal credential type 0x01 or 0x02. At this point Galaxy does not support batch top ups.
+
+        - **0x01 validators:** The valid top up amount must be between 1 ETH and the amount required to reach a total balance of 32 ETH.
+
+        - **0x02 validators:** The valid top up amount must be between 1 ETH and the amount required to reach a total balance of 2048 ETH.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+  /v1/ethereum/validators/fee:
+    post:
+      summary: Get Fees
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+      operationId: fee
+      description: 'The get fees endpoint allows clients to retrieve the current fee applicable to the following actions on existing validators:
+
+        - Consolidation or conversion
+
+        - Execution-layer triggerable exits or partial withdrawals
+
+
+        Fees are dynamic and vary based on the number of pending requests in the corresponding processing queue. It is recommended to call this endpoint before submitting a request to ensure awareness of the applicable fee.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeRequest'
+  /v1/ethereum/validators/deposit-data:
+    get:
+      summary: Get Deposit Data
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositDataResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositDataErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: deposit-data
+      description: The deposit data endpoint facilitates the retrieval of the Provision Validators endpoint’s response, which contains the deposit data, using the Client Request ID of the original request.
+      parameters:
+      - schema:
+          type: string
+        in: query
+        name: client_req_id
+        description: The Client Request ID applicable to the Provision Validators request for which deposit data is required.
+  /v1/ethereum/validators/update-fee-recipient:
+    post:
+      summary: Update Fee Recipient Address
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateFeeRecipientResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StakingErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerStakingErrorListResponse'
+      operationId: update-fee-recipient
+      description: The update fee recipient address endpoint allows clients to update their validators’ fee recipient address and direct execution-layer rewards to a new wallet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFeeRecipientRequest'
+  /v1/ethereum/validators/monitoring:
+    post:
+      summary: Validator Monitoring
+      tags:
+      - Ethereum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorMonitoringResponse'
+          headers:
+            header-0:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorErrorListResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerInfoErrorMessage'
+      operationId: monitoring
+      description: 'Clients can invoke this endpoint to monitor existing validators by retrieving and tracking validator addresses on the platform. A request with a list of validator addresses enables the creation of corresponding positions on the platform for monitoring.
+
+
+        If an onboarded validator has a long history to catch up on, it will take some time for the validator to become up to date with the current epoch, status, balances, and rewards. When performing any staking actions on such validators, this must be taken into account.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatorMonitoringRequest'
+components:
+  schemas:
+    ExecutionReward:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of rewards.
+          enum:
+          - EXECUTION
+        rewards_eth:
+          type: number
+          format: double
+          description: 'Execution layer rewards accumulated during the period in ETH. Note: If the MEV information is not yet available, this field will be set to null. The value will be updated once the MEV information becomes available.'
+        rewards_wei:
+          type: string
+          description: 'Execution layer rewards accumulated during the period in WEI. Note: If the MEV information is not yet available, this field will be set to null. The value will be updated once the MEV information becomes available.'
+        is_mev:
+          type: boolean
+          description: When the MEV boost was used for the block proposal, this should be set to true; otherwise it will be false. This field will also be set to ‘false’ if the MEV information is not yet available. In a scenario like this, the rewards_eth and rewards_wei values will be set to null. The values will be updated once the MEV information becomes available.
+        mev_relay:
+          type:
+          - string
+          - 'null'
+          description: The name of the MEV boost service. Applicable only if is_mev is true; otherwise, it will be null. This field will also be set to null if the MEV information is not yet available. The value will be updated once the MEV information becomes available.
+        recipient:
+          type: string
+          description: The recipient address of the execution rewards. This field will be set to null if the MEV information has not yet been received from the relay. The value will be updated once the MEV information becomes available.
+        mev_builder:
+          type:
+          - string
+          - 'null'
+          description: The public key of the MEV builder that sent the execution rewards. Applicable only if is_mev is true; otherwise, it will be null. This field will also be set to null if the MEV information is not yet available. The value will be updated once the MEV information becomes available.
+        slot:
+          type: integer
+          description: The slot number of the proposal made by the validator.
+          format: int32
+        block:
+          type: integer
+          description: The execution layer block number of the proposal made by the validator.
+          format: int64
+        tx_hash:
+          type:
+          - string
+          - 'null'
+          description: The hash of the transaction used to send the MEV rewards. Applicable only if is_mev is true; otherwise, it will be null. This field will also be set to null if the MEV information is not yet available. The value will be updated once the MEV information becomes available.
+    StakingErrorListResponse:
+      title: Error List
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The client_req_id of the request addressed by this response message.
+        errors:
+          type: array
+          description: An array of errors that resulted from this request.
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+    DepositTransaction:
+      title: Staking Response Batch Deposit Transaction
+      type: object
+      description: The JSON object that contains the funding transaction details of all validators belonging to this batch.
+      properties:
+        deposit_amount_wei:
+          type: string
+          description: The total amount of ETH to be staked for the batch in WEI.
+        deposit_address:
+          type: string
+          description: Batch deposit contract address.
+        contract_call_data:
+          type: string
+          description: 'Encoded function call data to be broadcasted to the Batch Deposit Contract. '
+    DepositData:
+      title: Staking Response Batch Deposit Data
+      type: object
+      description: An array of validator details in this batch.
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        amount:
+          type: number
+          description: The amount of ETH in GWEI required to be deposited.
+          format: double
+        withdrawal_credentials:
+          type: string
+          description: Withdrawal credentials for the validator funds to be withdrawn upon exit.
+        signature:
+          type: string
+          description: A “proof of possession” which signs over pubkey, withdrawal_credentials, and amount using the validator private key.
+        deposit_data_root:
+          type: string
+          description: Merkle root hash of the deposit data.
+        deposit_message_root:
+          type: string
+          description: Merkle root hash of the deposit message.
+        fork_version:
+          type: string
+          description: The genesis fork version.
+        deposit_cli_version:
+          type: string
+          description: Staking deposit cli version.
+    InternalServerInfoErrorMessage:
+      title: Error Message
+      type: object
+      description: An array of errors that resulted from this request.
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The description related to the error being reported.
+    ConsensusReward:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of rewards.
+          enum:
+          - CONSENSUS
+        rewards_eth:
+          type: number
+          format: double
+          description: Consensus layer rewards accumulated during the period in ETH.
+        rewards_wei:
+          type: string
+          description: Consensus layer rewards accumulated during the period in WEI.
+        attestation_rewards_eth:
+          type: number
+          format: double
+          description: Total rewards earned from attestation duties during the period, expressed in ETH. This field is only applicable for consensus layer rewards. Returned only when cl_rewards_breakdown is true.
+        attestation_rewards_wei:
+          type: string
+          description: Total rewards earned from attestation duties during the period, expressed in WEI. This field is only applicable for consensus layer rewards. Returned only when cl_rewards_breakdown is true.
+        block_proposer_rewards_eth:
+          type: number
+          format: double
+          description: Total rewards earned from block proposal duties during the period, expressed in ETH. This field is only applicable for consensus layer rewards. Returned only when cl_rewards_breakdown is true.
+        block_proposer_rewards_wei:
+          type: string
+          description: Total rewards earned from block proposal duties during the period, expressed in WEI. Returned only when cl_rewards_breakdown is true.
+        sync_committee_rewards_eth:
+          type: number
+          format: double
+          description: Total rewards earned from sync committee duties during the period, expressed in ETH. Returned only when cl_rewards_breakdown is true.
+        sync_committee_rewards_wei:
+          type: string
+          description: Total rewards earned from sync committee duties during the period, expressed in WEI. Returned only when cl_rewards_breakdown is true.
+        initial_slashing_penalties_eth:
+          type: number
+          format: double
+          description: Initial slashing penalties incurred during the period, expressed in ETH. Returned only when cl_rewards_breakdown is true.
+        initial_slashing_penalties_wei:
+          type: string
+          description: Initial slashing penalties incurred during the period, expressed in WEI. Returned only when cl_rewards_breakdown is true.
+        correlation_slashing_penalties_eth:
+          type: number
+          format: double
+          description: Correlation slashing penalties incurred during the period, expressed in ETH. Returned only when cl_rewards_breakdown is true.
+        correlation_slashing_penalties_wei:
+          type: string
+          description: Correlation slashing penalties incurred during the period, expressed in WEI. Returned only when cl_rewards_breakdown is true.
+    RewardsBreakdown:
+      title: RewardsBreakdown
+      type: object
+      description: An array that contains breakdown of rewards depending on the “rollup_type” parameter specified in the request.
+      properties:
+        epoch:
+          type: integer
+          description: 'The epoch corresponds to the rewards. This is applicable only if the rollup_type is 1. '
+          format: int32
+        actual_balance_in_wei:
+          type: string
+          description: Actual balance of the validator in the corresponding epoch, in WEI.
+        actual_balance_in_eth:
+          type: number
+          description: Actual balance of the validator in the corresponding epoch, in ETH.
+          format: double
+        balance_in_wei:
+          type: string
+          description: Effective balance of the validator in the corresponding epoch, in WEI.
+        balance_in_eth:
+          type: number
+          description: Effective balance of the validator in the corresponding epoch, in ETH.
+          format: double
+        timestamp:
+          type: string
+          description: 'The timestamp corresponding to the epoch at which the rewards were given. '
+        rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardsInfo'
+    ValidatorExitData:
+      title: Validator Exit Data
+      type: object
+      description: An array which contains the details of the validators to be exited.
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: integer
+          description: Index of the corresponding validator.
+          format: int32
+        withdrawal_address:
+          type: string
+          description: 'Withdrawal address of the corresponding validator. '
+        status:
+          type: string
+          description: Current status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+    ValidatorExitRequest:
+      title: Validator Exit Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - type
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier generated and sent by the client for the exit request. Refer Client Request Identifier for further details.
+        network:
+          type: string
+          description: 'The network on which validators were created. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        type:
+          type: integer
+          description: 'Indicates the type of attribute used to identify the validators to exit. The possible values are,
+
+            - 1 (pubkey)
+
+            - 2 (validator_index)
+
+            - 3 (withdrawal_address)'
+          format: int32
+          enum:
+          - 1
+          - 2
+          - 3
+        pubkeys:
+          type: array
+          items:
+            type: string
+            description: "List of validator public keys to be exited. \nThis is required if the exit type is 1. \nA maximum of 250 public keys can be specified."
+        validator_indexes:
+          type: array
+          items:
+            type: integer
+            description: "The list of validator indexes to be exited. \nRequired if exit type is 2. \nA maximum of 250 validator indexes can be specified."
+            format: int32
+        withdrawal_address:
+          type: string
+          description: 'The withdrawal address of the validators that should be exited.
+
+            Required if exit type is 3'
+        validator_count:
+          type: integer
+          description: "Required if exit type is 3. \nThe Max count should be 250."
+          format: int32
+    InternalServerErrorMessage:
+      title: Error Message
+      type: object
+      description: An array of errors that resulted from this request.
+      required:
+      - message
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: The description related to the error being reported.
+    DepositDataErrorResponse:
+      title: DepositDataErrorResponse
+      type: object
+      required:
+      - client_req_id
+      - errors
+      properties:
+        client_req_id:
+          type: string
+          description: Client Request ID that the Staking Partner provided.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepositDataErrorMessage'
+    FeeResponse:
+      title: FeeResponse
+      type: object
+      properties:
+        network:
+          description: Network to which the validators belong to.
+          enum:
+          - mainnet
+          - hoodi
+        operation_type:
+          description: 'Indicates the type of operation for which the user is requesting fees.
+
+            - validator_consolidation_or_conversion
+
+            - el_triggerable_exit_or_withdrawal'
+          enum:
+          - validator_consolidation_or_conversion
+          - el_triggerable_exit_or_withdrawal
+        fee_in_ETH:
+          type: number
+          description: 'The applicable fee in ETH. '
+          format: float
+        fee_in_WEI:
+          type: string
+          description: 'The applicable fee in WEI. '
+        retrieved_at:
+          type: string
+          description: The time at which the fee was retrieved by the platform. Time will be shown in the “YYYY-MM-DD HH:mm:ss” format.
+    TopUpResponseBatchData:
+      title: Top Up Response Batch Data
+      type: object
+      properties:
+        batch_id:
+          description: 'Identifier of the validator batch. Possible values are 1 - 10. '
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+        deposit_data:
+          type: array
+          description: 'An array of validator details in this batch. '
+          items:
+            $ref: '#/components/schemas/TopUpResponseDepositData'
+        deposit_transaction:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUpResponseTransactionData'
+    StatusHistoryData:
+      title: Status History Data
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+        transitioned_at:
+          type: string
+          description: The date and time the validator transitioned into the given status. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+      description: 'An array that contains the state transition of the validator. '
+    VoluntaryExitData:
+      title: Voluntary Exit Data
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique request id sent by the client when requesting the voluntary exit.
+        requested_at:
+          type: string
+          description: The date and time the exit request was received. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        submitted_at:
+          type: string
+          description: The date and time the validator’s exit message was broadcasted to the beacon node. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+      description: JSON object that contains on demand exit related information if the validator has initiated the voluntary exit. Otherwise, it will be null.
+    ValidatorMonitoringRequestData:
+      title: ValidatorMonitoringRequestData
+      type: object
+      required:
+      - pubkey
+      properties:
+        pubkey:
+          type: string
+          description: The public key of the validator that will be monitored on the platform.
+        account:
+          type: string
+          description: The account name registered on the platform that is associated with the Staking Partner. If not provided, requests will be assigned to the default account.
+    TopUpResponseTransactionData:
+      title: Top Up Response Transaction Data
+      type: object
+      description: The JSON object that contains the funding transaction details of all validators belonging to this batch.
+      properties:
+        deposit_amount_wei:
+          type: string
+          description: Total amount of ETH to be topped up for the received top up request, in wei.
+        deposit_address:
+          type: string
+          description: Batch deposit contract address.
+        contract_call_data:
+          type: string
+          description: 'Encoded function call data to be broadcasted to the Batch Deposit Contract. '
+    TopUpResponseDepositData:
+      title: Top Up Response Deposit Data
+      type: object
+      description: An array of validator details in this batch.
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        amount:
+          type: number
+          description: The amount of ETH in GWEI required to be deposited.
+          format: double
+        withdrawal_credentials:
+          type: string
+          description: Withdrawal credentials for the validator funds to be withdrawn upon exit.
+        signature:
+          type: string
+          description: A “proof of possession” which signs over pubkey, withdrawal_credentials, and amount using the validator private key.
+        deposit_data_root:
+          type: string
+          description: Merkle root hash of the deposit data.
+        deposit_message_root:
+          type: string
+          description: Merkle root hash of the deposit message.
+        fork_version:
+          type: string
+          description: The genesis fork version.
+        deposit_cli_version:
+          type: string
+          description: Staking deposit cli version.
+    DepositDataResponse:
+      title: Staking Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The client_req_id of the original Provision Validators request for which the response is returned.
+        staking_ref_id:
+          type: string
+          description: A unique reference ID generated by the staking infrastructure for the staking request.
+        network:
+          type: string
+          description: 'The network on which validators should be created. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        withdrawal_credentials_type:
+          enum:
+          - '0x01'
+          - '0x02'
+          description: 'The withdrawal credential type of the validator(s) that will be created. Applicable values are;
+
+            - 0x01
+
+            - 0x02'
+        withdrawal_address:
+          type: string
+          description: The specified address to which funds will be withdrawn, as mentioned in the staking request.
+        fee_recipient_address:
+          type: string
+          description: The fee recipient address that receives Execution Layer fees, as mentioned in the staking request.
+        region:
+          type: string
+          description: 'The geographic region where the validator will be created. Supported values are;
+
+            - US
+
+            - EU
+
+            - KR'
+          enum:
+          - US
+          - EU
+          - KR
+        provisioned_at:
+          type: string
+          description: The date and time when the validator was provisioned by the staking infrastructure.
+        data:
+          type: array
+          description: A block that contains validator batches. Each batch includes details of 100 validators and the associated funding transaction.
+          items:
+            $ref: '#/components/schemas/BatchData'
+    PresignedExitData:
+      title: Pre-signed Exit Data
+      type: object
+      properties:
+        fork_version:
+          type: string
+          description: The genesis fork version used when generating the pre-signed exit message.
+        encrypted_exit_message:
+          type: string
+          description: The encrypted pre-signed exit message. The client can decrypt this message using their private key.
+      description: This JSON object will be populated if the include_presigned_exit query parameter is set to “true” and the validator is in active status for at-least 256 epochs. Otherwise, it will be set to null.
+    ValidatorExitResponse:
+      title: Validator Exit Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: Unique identifier specified in the request.
+        network:
+          type: string
+          description: 'Network specified in the request. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        data:
+          type: array
+          description: An array which contains the details of the validators to be exited.
+          items:
+            $ref: '#/components/schemas/ValidatorExitData'
+    EthEpochLevelInfoResponseWithValidatorData:
+      title: Validator Rewards
+      type: object
+      properties:
+        network:
+          type: string
+          description: 'Network specified in the request. '
+          enum:
+          - mainnet
+          - hoodi
+        start:
+          type: string
+          description: 'Start epoch or start date specified in the request. '
+        end:
+          type: string
+          description: End epoch or end date specified in the request.
+        page:
+          type: integer
+          description: The current page number sent in the request
+          format: int32
+        total:
+          type: integer
+          description: The total number of records resulted for the input criteria.
+          format: int32
+        data:
+          type: array
+          description: An array that contains the breakdown.
+          items:
+            $ref: '#/components/schemas/ValidatorAddressWiseData'
+    ValidatorsSummaryResponse:
+      title: Validator Summary Response
+      type: object
+      properties:
+        network:
+          type: string
+          description: Network specified in the request.
+          enum:
+          - mainnet
+          - hoodi
+        total:
+          type: integer
+          description: Total number of validators provisioned for the given client and the network.
+          format: int64
+        data:
+          type: array
+          description: An array that contains validators summary.
+          items:
+            $ref: '#/components/schemas/SummaryData'
+    ValidatorAddressWiseData:
+      title: Validator Rewards
+      type: object
+      description: An array that contains the breakdown.
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: string
+          description: Validator index.
+        withdrawal_credential_type:
+          type: string
+          description: 'Withdrawal credential type of the validator. Applicable values are:
+
+            - 0x00
+
+            - 0x01
+
+            - 0x02'
+        total_eth:
+          type: number
+          description: Total rewards the validator earned since inception in ETH. If the MEV information is not available for a certain epoch, that epoch's exact reward value will not be included in this value. The reward value will be updated once the MEV information becomes available.
+          format: double
+        total_wei:
+          type: string
+          description: Total rewards the validator earned since inception in WEI. If the MEV information is not available for a certain epoch, that epoch's exact reward value will not be included in this value. The reward value will be updated once the MEV information becomes available.
+        accumulated_rewards:
+          type: array
+          description: An array that contains accumulated consensus and execution layer rewards for the given validator and the query criteria. For Execution Layer Rewards, if the MEV information is not available for a certain epoch within the queried range, that epoch’s exact reward value will not be included in this value. The reward value will be updated once the MEV information becomes available.
+          items:
+            $ref: '#/components/schemas/AccumulatedEthRewardsData'
+        rewards_breakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/RewardsBreakdown'
+    ELWithdrawalRequestData:
+      title: EL Withdrawal Request Data
+      type: object
+      required:
+      - amount
+      properties:
+        pubkey:
+          type: string
+          description: "Validator public key that needs a partial withdrawal. \n\nThis is required if the partial withdrawal type is 1. "
+        validator_index:
+          type: integer
+          description: "Validator index that needs a partial withdrawal. \n\nThis is required if the partial withdrawal type is 2."
+        amount:
+          type: number
+          format: float
+          description: Withdrawal amount corresponding to the given validator.
+    TopUpRequest:
+      title: Top Up Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - data
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the execution layer triggerable withdrawal request provided by the client.
+        network:
+          enum:
+          - mainnet
+          - hoodi
+          description: 'Network to which the validators belongs to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUpRequestData'
+    RewardsInfo:
+      description: An array that contains consensus and execution layer rewards for the given epoch.
+      oneOf:
+      - $ref: '#/components/schemas/ConsensusReward'
+      - $ref: '#/components/schemas/ExecutionReward'
+    ErrorMessage:
+      title: Error Message
+      type: object
+      description: An array of errors that resulted from this request.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          description: The code related to the error being reported.
+          format: int32
+        message:
+          type: string
+          description: The description related to the error being reported.
+    FeeRequest:
+      title: Fee Request
+      type: object
+      required:
+      - network
+      - operation_type
+      properties:
+        network:
+          description: 'Network to which the validators belongs to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        operation_type:
+          enum:
+          - 1
+          - 2
+          description: 'Indicates the type of operation for which the user is requesting fees.
+
+            - 1 (validator_consolidation_or_conversion)
+
+            - 2 (el_triggerable_exit_or_withdrawal)'
+    ValidatorInfoResponse:
+      title: Validator Info
+      type: object
+      properties:
+        network:
+          type: string
+          description: The network on which validators were created.
+          enum:
+          - mainnet
+          - hoodi
+        last_monitored_epoch:
+          type: integer
+          description: The most recent epoch successfully monitored for the validator, regardless of whether a validator record was persisted. Not applicable from staking initiation until the validator becomes active unless an epoch record exists for the last monitored epoch. Epoch records are created only when there is a balance, status, or reward update for that epoch.
+          format: int32
+        epoch:
+          type: integer
+          description: The specific blockchain epoch to which the returned validator details correspond.
+          format: int32
+        status:
+          type: string
+          description: Current status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        region:
+          type: string
+          description: The geographic region where the validator will be created.
+          enum:
+          - US
+          - EU
+          - KR
+        validator_index:
+          type: integer
+          description: Validator index.
+          format: int32
+        withdrawal_credential_type:
+          type: string
+          description: 'Withdrawal credential type of the validator. Applicable values are:
+
+            - 0x00
+
+            - 0x01
+
+            - 0x02'
+        withdrawal_address:
+          type: string
+          description: 'Withdrawal address of the corresponding validator. '
+        fee_recipient_address:
+          type: string
+          description: The fee recipient address belongs to the validator.
+        estimated_activation_at:
+          type: string
+          description: Estimate of when the validator will become active and start earning rewards. This will be populated since the validator is transitioned to DEPOSITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        estimated_exit_at:
+          type: string
+          description: Estimate of when the validator will exit and stop earning rewards. This will be populated since the validator is transitioned to EXIT_INITIATED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        estimated_withdrawal_at:
+          type: string
+          description: Estimate of when the validator’s principal will become withdrawable. This will be populated since the validator is transitioned to EXITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        balance_in_wei:
+          type: string
+          description: Actual balance of the validator in WEI.
+        balance_in_eth:
+          type: number
+          description: Actual balance of the validator in ETH.
+          format: double
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusHistoryData'
+        voluntary_exit:
+          $ref: '#/components/schemas/VoluntaryExitData'
+        presigned_exit:
+          $ref: '#/components/schemas/PresignedExitData'
+        staking_request_info:
+          $ref: '#/components/schemas/StakingRequestInfo'
+    BatchData:
+      title: Staking Response Batch
+      type: object
+      properties:
+        batch_id:
+          type: integer
+          description: Identifier of the validator batch.
+          format: int32
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+        deposit_data:
+          type: array
+          description: An array of validator details in this batch.
+          items:
+            $ref: '#/components/schemas/DepositData'
+        deposit_transaction:
+          $ref: '#/components/schemas/DepositTransaction'
+      description: A block that contains validator batches. Each batch includes details of 250 validators and the associated funding transaction.
+    EthEpochLevelInfoResponseWithWithdrawalSlotInfo:
+      title: Withdrawals
+      type: object
+      properties:
+        network:
+          type: string
+          description: 'Network specified in the request. '
+          enum:
+          - mainnet
+          - hoodi
+        start:
+          type: string
+          description: 'Start epoch or start date specified in the request. '
+        end:
+          type: string
+          description: End epoch or end date specified in the request.
+        page:
+          type: integer
+          description: The current page number sent in the request
+          format: int32
+        total:
+          type: integer
+          description: The total number of records resulted for the input criteria.
+          format: int32
+        data:
+          type: array
+          description: An array that contains the breakdown.
+          items:
+            $ref: '#/components/schemas/WithdrawalSlotInfoType1'
+    ConsolidateResponse:
+      title: Consolidate Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The unique identifier specified in the request.
+        network:
+          description: 'Network to which the source and destination validators belong to. '
+          enum:
+          - mainnet
+          - hoodi
+        destination_pubkey:
+          type: string
+          description: The validator that will hold the merged balance. If the request was a conversion, this will be kept empty.
+        consolidation_contract_address:
+          type: string
+          description: Encoded function call data to be broadcasted to the Batch Deposit Contract.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsolidateResponseData'
+        created_at:
+          type: string
+          description: The time at which the request was received by the platform. Time will be shown in the “YYYY-MM-DD HH:mm:ss” format.
+    StakingResponse:
+      title: Staking Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The client_req_id of the staking request addressed by this response message.
+        staking_ref_id:
+          type: string
+          description: A unique reference ID generated by the staking infrastructure for the staking request.
+        network:
+          type: string
+          description: 'The network on which validators should be created. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        withdrawal_credentials_type:
+          enum:
+          - '0x01'
+          - '0x02'
+          description: 'The withdrawal credential type of the validator(s) that will be created. Applicable values are;
+
+            - 0x01
+
+            - 0x02'
+        withdrawal_address:
+          type: string
+          description: The specified address to which funds will be withdrawn, as mentioned in the staking request.
+        fee_recipient_address:
+          type: string
+          description: The fee recipient address that receives Execution Layer fees, as mentioned in the staking request.
+        region:
+          type: string
+          description: 'The geographic region where the validator will be created. Supported values are;
+
+            - US
+
+            - EU
+
+            - KR'
+          enum:
+          - US
+          - EU
+          - KR
+        provisioned_at:
+          type: string
+          description: The date and time when the validator was provisioned by the staking infrastructure.
+        data:
+          type: array
+          description: A block that contains validator batches. Each batch includes details of 100 validators and the associated funding transaction.
+          items:
+            $ref: '#/components/schemas/BatchData'
+    ValidatorMonitoringRequest:
+      title: ValidatorMonitoringRequest
+      type: object
+      required:
+      - network
+      - data
+      properties:
+        network:
+          type: string
+          description: 'Network to which the validators belongs to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorMonitoringRequestData'
+    ConsolidateRequest:
+      title: Consolidate Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - source_pubkeys
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the staking request generated by the client.
+        network:
+          description: 'The network to which the source and destination validators belong to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        source_pubkeys:
+          type: array
+          minItems: 1
+          maxItems: 50
+          uniqueItems: true
+          description: "The type 0x01 validators to be converted to type 0x02 or type 0x01 and 0x02 validators to be merged with the destination_pubkey. \n\nA maximum of 50 validators are supported."
+          items:
+            type: string
+        destination_pubkey:
+          type: string
+          description: The validator that will hold the merged balance. Must be a 0x02 type validator.
+    ValidatorMonitoringResponse:
+      title: ValidatorMonitoringResponse
+      type: object
+      properties:
+        validator_monitoring_reference_id:
+          type: string
+          description: A system-generated unique identifier for the API request. This identifier is recorded in the ‘Link ID’ field of all positions created through the API request.
+    ValidatorErrorListResponse:
+      title: Validator Error Response
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorErrorMessage'
+    InternalServerStakingErrorListResponse:
+      title: Error List
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The client_req_id of the request addressed by this response message.
+        errors:
+          type: array
+          description: An array of errors that resulted from this request.
+          items:
+            $ref: '#/components/schemas/InternalServerErrorMessage'
+      description: ''
+    AccumulatedEthRewardsData:
+      oneOf:
+      - $ref: '#/components/schemas/ConsensusAccumulatedReward'
+      - $ref: '#/components/schemas/ExecutionAccumulatedReward'
+      discriminator:
+        propertyName: type
+    StakingRequestInfo:
+      title: Staking Request Data
+      type: object
+      properties:
+        staking_ref_id:
+          type: string
+          description: A unique reference ID generated by the staking infrastructure for the staking request.
+        provisioned_at:
+          type: string
+          description: The date and time when the validator was provisioned by the staking infrastructure. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+      description: JSON object that contains the staking request id and validators provisioned date and time. This should be set to ‘null’ for externally provisioned validators.
+    ValidatorInfoData:
+      title: Validator Info Data
+      type: object
+      description: An array that contains the details about validators.
+      properties:
+        last_monitored_epoch:
+          type: integer
+          description: The most recent epoch successfully monitored for the validator, regardless of whether a validator record was persisted. Not applicable from staking initiation until the validator becomes active unless an epoch record exists for the last monitored epoch. Epoch records are created only when there is a balance, status, or reward update for that epoch.
+          format: int32
+        epoch:
+          type: integer
+          description: The specific blockchain epoch to which the returned validator details correspond.
+          format: int32
+        status:
+          type: string
+          description: Current status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        region:
+          type: string
+          description: The geographic region where the validator will be created.
+          enum:
+          - US
+          - EU
+          - KR
+        validator_index:
+          type: integer
+          description: Validator index.
+          format: int32
+        withdrawal_credential_type:
+          type: string
+          description: 'Withdrawal credential type of the validator. Applicable values are:
+
+            - 0x00
+
+            - 0x01
+
+            - 0x02'
+        withdrawal_address:
+          type: string
+          description: 'Withdrawal address of the corresponding validator. '
+        fee_recipient_address:
+          type: string
+          description: The fee recipient address belongs to the validator.
+        estimated_activation_at:
+          type: string
+          description: Estimate of when the validator will become active and start earning rewards. This will be populated since the validator is transitioned to DEPOSITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        estimated_exit_at:
+          type: string
+          description: Estimate of when the validator will exit and stop earning rewards. This will be populated since the validator is transitioned to EXIT_INITIATED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        estimated_withdrawal_at:
+          type: string
+          description: Estimate of when the validator’s principal will become withdrawable. This will be populated since the validator is transitioned to EXITED status. Until then, it will be null. It will be in the format of “YYYY-MM-DD HH:mm:ss”.
+        balance_in_wei:
+          type: string
+          description: Actual balance of the validator in WEI.
+        balance_in_eth:
+          type: number
+          description: Actual balance of the validator in ETH.
+          format: double
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusHistoryData'
+        voluntary_exit:
+          $ref: '#/components/schemas/VoluntaryExitData'
+        presigned_exit:
+          $ref: '#/components/schemas/PresignedExitData'
+        staking_request_info:
+          $ref: '#/components/schemas/StakingRequestInfo'
+    ELExitRequest:
+      title: EL Exit Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - type
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the execution layer triggerable exit request provided by the client.
+        network:
+          enum:
+          - mainnet
+          - hoodi
+          description: 'Network to which the validators belongs to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+        type:
+          enum:
+          - 1
+          - 2
+          description: 'Indicates the type of attribute used to identify the validators to exit. The possible values are:
+
+            - 1 (pubkey)
+
+            - 2 (validator_index)'
+        pubkeys:
+          type: array
+          minItems: 1
+          maxItems: 100
+          uniqueItems: true
+          description: "List of validator public keys to be exited. \n\nThis is required if the exit type is 1. \n\nA maximum of 100 public keys can be specified."
+          items:
+            type: string
+        validator_indexes:
+          type: array
+          minItems: 1
+          maxItems: 100
+          uniqueItems: true
+          description: "List of validator indexes to be exited. \n\nThis is required if the exit type is 2.\n\nA maximum of 100 validator indexes can be specified."
+          items:
+            type: integer
+            format: int32
+    ELExitResponse:
+      title: EL Exit Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The unique identifier specified in the request.
+        network:
+          description: 'Network to which the validators belong to. '
+          enum:
+          - mainnet
+          - hoodi
+        exit_contract_address:
+          type: string
+          description: Encoded function call data to be broadcasted to the Batch Deposit Contract.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ELExitResponseData'
+        created_at:
+          type: string
+          description: The time at which the request was received by the platform. Time will be shown in the “YYYY-MM-DD HH:mm:ss” format.
+    ValidatorPreSignedExitResponse:
+      title: Validator Pre-signed Exit Response
+      type: object
+      properties:
+        network:
+          type: string
+          description: Network specified in the request.
+          enum:
+          - mainnet
+          - hoodi
+        data:
+          type: array
+          description: An array which contains the details of the validators to be exited.
+          items:
+            $ref: '#/components/schemas/PreSignedExitDBO'
+    UpdateFeeRecipientResponseData:
+      title: UpdateFeeRecipientData
+      type: object
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: number
+          description: Index of the validator.
+        fee_recipient_address:
+          type: string
+          description: The updated fee recipient address.
+    ELWithdrawalResponse:
+      title: EL Withdrawal Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The unique identifier specified in the request.
+        network:
+          description: 'Network to which the validators belong to. '
+          enum:
+          - mainnet
+          - hoodi
+        withdrawal_contract_address:
+          type: string
+          description: Encoded function call data to be broadcasted to the Batch Deposit Contract.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ELWithdrawalResponseData'
+        created_at:
+          type: string
+          description: The time at which the request was received by the platform. Time will be shown in the “YYYY-MM-DD HH:mm:ss” format.
+    PreSignedExitDBO:
+      title: Validator Pre-signed Exit Data
+      type: object
+      description: An array which contains the details of the validators to be exited.
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: integer
+          description: Index of the corresponding validator.
+          format: int32
+        withdrawal_address:
+          type: string
+          description: Withdrawal address of the corresponding validator.
+        encrypted_exit_message:
+          type: string
+          description: The encrypted pre-signed exit message.The client can decrypt this message using their private key.
+        fork_version:
+          type: string
+          description: The genesis fork version used when generating the pre-signed exit message.
+        status:
+          type: string
+          description: Current status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+    SummaryData:
+      title: Summary Data
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the validator.
+          enum:
+          - STAKING_INITIATED
+          - PENDING_DEPOSIT
+          - DEPOSITED
+          - DEPOSIT_FAILED
+          - PENDING_QUEUED
+          - ACTIVE
+          - SLASHING
+          - SLASHED
+          - EXIT_INITIATED
+          - EXITING
+          - EXITED
+          - WITHDRAWABLE
+          - WITHDRAWN
+        count:
+          type: integer
+          description: 'The number of validators in the corresponding status. '
+          format: int64
+      description: An array that contains validators summary.
+    ConsensusAccumulatedReward:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - CONSENSUS
+        accumulated_eth:
+          type: number
+          format: double
+          description: Accumulated consensus rewards in ETH between the start and the end specified in the request.
+        accumulated_wei:
+          type: string
+          description: Accumulated consensus rewards in WEI between the start and the end specified in the request.
+    DepositDataErrorMessage:
+      title: DepositDataErrorMessage
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          description: The code related to the error being reported.
+          format: int32
+        message:
+          type: string
+          description: The description related to the error being reported.
+    StakingRequest:
+      title: Staking Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - validator_count
+      - withdrawal_address
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the staking request generated by the client.
+        network:
+          type: string
+          description: 'The network on which validators should be created. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        withdrawal_credentials_type:
+          enum:
+          - '0x01'
+          - '0x02'
+          description: 'The withdrawal credential type of the validator(s) to be created. Supported values are;
+
+            - 0x01 (Default)
+
+            - 0x02'
+          default: '0x01'
+        amounts_unit:
+          description: 'The unit in which the staking amount is specified for withdrawal_credential_type = 0x02 validators in the amounts field. Supported values are:
+
+            - ETH
+
+            - GWEI
+
+
+            Conditionally required if the withdrawal_credential_type = 0x02.'
+          enum:
+          - ETH
+          - GWEI
+        amounts:
+          type: array
+          description: "The Ethereum amounts to be staked, specified in either ETH or GWEI. This is required if the withdrawal credentials type is 0x02. \n\n- When specified in ETH, up to 9 decimal places are supported.\n- When specified in GWEI, only whole numbers are supported.\n- Any additional decimal places will be ignored."
+          items:
+            type: integer
+            format: int32
+        validator_count:
+          type: integer
+          description: The number of validators required. A maximum of 1000 validators are supported
+          format: int32
+        withdrawal_address:
+          type: string
+          description: The ETH account (wallet) used for the withdrawal credentials of the validators. This is the address that will receive consensus rewards and unstaked ETH after exiting.
+        fee_recipient_address:
+          type: string
+          description: The ETH account (wallet) that will receive the execution layer rewards. If not provided, this will be defaulted to the withdrawal address.
+        region:
+          type: string
+          description: 'The geographic region where the validator will be created. Supported values are;
+
+            - US
+
+            - EU (Default)
+
+            - KR'
+          default: EU
+          enum:
+          - US
+          - EU
+          - KR
+        account:
+          type: string
+          description: 'The account name registered on the platform that is associated with the client''s customer. If not provided, requests will be assigned to a default account.
+
+            '
+    ELWithdrawalResponseData:
+      title: EL Withdrawal Response Data
+      type: object
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: integer
+          format: int32
+          description: Index of the validator.
+        amount:
+          type: number
+          format: float
+          description: Amount to be withdrawn.
+        contract_call_data:
+          type: string
+          description: The unsigned transaction payload associated with the partial withdrawal.
+        signer:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Withdrawal address of the validator public key.
+          items:
+            type: string
+    UpdateFeeRecipientResponse:
+      title: UpdateFeeRecipientResponse
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The unique identifier specified in the request.
+        network:
+          type: string
+          description: Network to which the validators belong to.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdateFeeRecipientResponseData'
+    ValidatorsInfoResponse:
+      title: Validator Info Response
+      type: object
+      properties:
+        network:
+          type: string
+          description: Network specified in the request.
+          enum:
+          - mainnet
+          - hoodi
+        page:
+          type: integer
+          description: The current page number sent in the request.
+          format: int32
+        total:
+          type: integer
+          description: Total number of validators provisioned for the given client and the network.
+          format: int32
+        data:
+          type: array
+          description: An array that contains the details about validators.
+          items:
+            $ref: '#/components/schemas/ValidatorInfoData'
+    EthEpochLevelInfoRequest:
+      title: Rewards Request
+      type: object
+      required:
+      - network
+      - start
+      - end
+      - rollup_type
+      properties:
+        network:
+          type: string
+          description: 'The network on which validators should be created. Supported values are;
+
+            - mainnet
+
+            - hoodi'
+          enum:
+          - mainnet
+          - hoodi
+        start:
+          type: string
+          description: It specifies the start epoch if the type is 1, or the start date in the "YYYY-MM-DD" format (UTC timezone) if the type is 2
+        end:
+          type: string
+          description: It specifies the end epoch if the type is 1, or the end date in the "YYYY-MM-DD" format (UTC timezone) if the type is 2
+        rollup_type:
+          type: string
+          description: 'Denotes how the requested rewards range is specified. Applicable values are:
+
+            -1 (epoch)
+
+            - 2 (date)'
+          enum:
+          - '1'
+          - '2'
+        pubkeys:
+          type: array
+          items:
+            type: string
+            description: List of validator public keys to fetch the rewards breakdown. A maximum of 50 entries are allowed.
+        cl_rewards_breakdown:
+          type: boolean
+          default: false
+          description: "Denotes whether the response should include a detailed consensus-layer (CL) rewards and penalties breakdown. The applicable values are: \n- true\n- false (Default)"
+    ELExitResponseData:
+      title: EL Exit Response Data
+      type: object
+      properties:
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: integer
+          format: int32
+          description: Index of the validator.
+        contract_call_data:
+          type: string
+          description: The unsigned transaction payload associated with the exit.
+        signer:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Withdrawal address of the validator public key.
+          items:
+            type: string
+    ValidatorErrorMessage:
+      title: Validator Error Message
+      type: object
+      description: An array of errors that resulted from this request.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          description: The code related to the error being reported.
+          format: int32
+        message:
+          type: string
+          description: The description related to the error being reported.
+    UpdateFeeRecipientData:
+      title: UpdateFeeRecipientData
+      type: object
+      required:
+      - fee_recipient_address
+      properties:
+        pubkey:
+          type: string
+          description: "Validator public key that needs an address change. \n\nWill only be required if type = 1.\n\nAny value provided in this field when type = 2, will be ignored."
+        validator_index:
+          type: number
+          description: "Validator index that needs an address change. \n\nWill only be required if type = 2.\n\nAny value provided in this field when type = 1, will be ignored."
+        fee_recipient_address:
+          type: string
+          description: The new fee recipient address corresponding to the given validator.
+    UpdateFeeRecipientRequest:
+      title: UpdateFeeRecipientRequest
+      type: object
+      required:
+      - client_req_id
+      - network
+      - type
+      - data
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the request provided by the client.
+        network:
+          type: string
+          description: 'Network to which the validators belong to.
+
+
+            Possible values:
+
+            - mainnet
+
+            - hoodi'
+        type:
+          type: integer
+          description: 'Indicates the type of attribute used to identify the validators that need address changes. The possible values are,
+
+            - 1 (pubkeys)
+
+
+            2 (validator_index)'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdateFeeRecipientData'
+    WithdrawalSlotInfoType1:
+      title: Withdrawals
+      type: object
+      description: An array that contains the breakdown.
+      properties:
+        timestamp:
+          type: string
+          description: The timestamp corresponds to the withdrawal epoch. This should be in the format of “YYYY-MM-DD HH:mm:ss” in UTC.
+        slot:
+          type: integer
+          description: The consensus layer slot at which withdrawal occurred.
+          format: int32
+        block:
+          type: integer
+          description: The execution layer block number at which withdrawal occurred.
+          format: int64
+        epoch:
+          type: integer
+          description: The epoch at which the withdrawal was executed. Applicable only if the rollup_type is 1.
+          format: int32
+        pubkey:
+          type: string
+          description: Public key of the validator.
+        validator_index:
+          type: string
+          description: The index of the validator.
+        withdrawal_credential_type:
+          type: string
+          description: 'Withdrawal credential type of the validator. Applicable values are:
+
+            - 0x00
+
+            - 0x01
+
+            - 0x02'
+        withdrawal_address:
+          type: string
+          description: The withdrawal address of the validator.
+        withdrawal_amount_eth:
+          type: number
+          description: The withdrawn amount in ETH.
+          format: double
+        withdrawal_amount_wei:
+          type: string
+          description: The withdrawn amount in WEI.
+        is_full_withdrawal:
+          type: boolean
+          description: This parameter indicates whether the validator’s balance was fully withdrawn or not.
+    ConsolidateResponseData:
+      title: Consolidate Response Data
+      type: object
+      properties:
+        source_pubkey:
+          type: string
+          description: Source public key.
+        contract_call_data:
+          type: string
+          description: The unsigned transaction payload relevant for the source public key.
+        signer:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Withdrawal address of the source public key.
+          items:
+            type: string
+    ELWithdrawalRequest:
+      title: EL Withdrawal Request
+      type: object
+      required:
+      - client_req_id
+      - network
+      - type
+      - data
+      properties:
+        client_req_id:
+          type: string
+          description: A unique identifier for the execution layer triggerable withdrawal request provided by the client.
+        network:
+          enum:
+          - mainnet
+          - hoodi
+          description: 'Network to which the validators belongs to. Supported values are:
+
+            - mainnet
+
+            - hoodi'
+        type:
+          enum:
+          - 1
+          - 2
+          description: 'Indicates the type of attribute used to identify the validators that need partial withdrawals. The possible values are:
+
+            - 1 (pubkey)
+
+            - 2 (validator_index)'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ELWithdrawalRequestData'
+    TopUpRequestData:
+      title: Top Up Request Data
+      type: object
+      required:
+      - pubkey
+      - deposit_amount
+      properties:
+        pubkey:
+          type: string
+          description: 'Validator that needs to be topped up. '
+        deposit_amount:
+          type: number
+          format: float
+          description: 'The ETH amount that must be topped up. '
+    ExecutionAccumulatedReward:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - EXECUTION
+        accumulated_eth:
+          type: number
+          format: double
+          description: Accumulated execution rewards in ETH between the start and the end specified in the request.
+        accumulated_wei:
+          type: string
+          description: Accumulated execution rewards in WEI between the start and the end specified in the request.
+    TopUpResponse:
+      title: Top Up Response
+      type: object
+      properties:
+        client_req_id:
+          type: string
+          description: The unique identifier specified in the request.
+        network:
+          type: string
+          description: 'Network to which the validators belong to. '
+          enum:
+          - mainnet
+          - hoodi
+        data:
+          type: array
+          description: A block that contains validator batches. Each batch includes details of 100 validators and the associated funding transaction.
+          items:
+            $ref: '#/components/schemas/TopUpResponseBatchData'
+  securitySchemes:
+    AuthorizationToken:
+      type: http
+      description: ''
+      scheme: bearer
+      bearerFormat: JWT
+    APIKey:
+      name: X-API-KEY
+      type: apiKey
+      in: header

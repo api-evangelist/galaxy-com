@@ -64,5 +64,145 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Galaxy is a company surfaced via the API Evangelist harvest backlog (source: market-gap:crypto-exchanges(NYDFS)) and added to the network as a stub for full-pipeline profiling.
-- https://www.galaxy.com
+Galaxy (Galaxy Digital) is a digital assets and data center infrastructure company offering institutional trading, lending, derivatives, prime services (GalaxyOne), custody, staking, tokenization, asset management and investment banking. Its APIs page lists OTC Trading, Prime Services (GalaxyOne Institutional) and Staking APIs; the Staking API is publicly documented at docs.staking.galaxy.com for Ethereum validator and Solana delegation operations, while the OTC, Prime and DeFi docs sit on access-controlled GitBook spaces.
+
+**Areas:** Company · Cryptocurrency · Digital Assets · Staking · Ethereum · Solana · Trading · Custody · Financial Services
+
+## Galaxy on APIs.io
+
+Everything profiled for Galaxy is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/galaxy-com/](https://apis.io/providers/galaxy-com/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Galaxy Ethereum API](https://apis.io/apis/galaxy-com/galaxy-com-ethereum-api/) — The Ethereum API from Galaxy — 16 operation(s) for ethereum.
+- [Galaxy Solana API](https://apis.io/apis/galaxy-com/galaxy-com-solana-api/) — The Staking API responses will adhere to standard HTTP response conventions. Importantly, the staking platform performs business validations on all POST…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [galaxy-com-mcp.yml](https://apis.io/servers/galaxy-com/galaxy-com-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Galaxy Com Agentic Access](https://apis.io/agentic-access/galaxy-com/galaxy-com-agentic-access/)
+
+#### JSON Schema (12)
+
+The data models the API reads and writes.
+
+- [DelegatorInfoListRequest](https://apis.io/schemas/galaxy-com/galaxy-com-delegator-info-list-request/)
+- [DelegatorInfoListResponse](https://apis.io/schemas/galaxy-com/galaxy-com-delegator-info-list-response/)
+- [DelegatorInfoResponse](https://apis.io/schemas/galaxy-com/galaxy-com-delegator-info-response/)
+- [DelegatorRewardsInfoResponse](https://apis.io/schemas/galaxy-com/galaxy-com-delegator-rewards-info-response/)
+- [Staking Response](https://apis.io/schemas/galaxy-com/galaxy-com-deposit-data-response/)
+- [Rewards Request](https://apis.io/schemas/galaxy-com/galaxy-com-eth-epoch-level-info-request/)
+- [SolValidatorInfoResponse](https://apis.io/schemas/galaxy-com/galaxy-com-sol-validator-info-response/)
+- [SOLDelegatorRewardsRequest](https://apis.io/schemas/galaxy-com/galaxy-com-soldelegator-rewards-request/)
+- [Staking Request](https://apis.io/schemas/galaxy-com/galaxy-com-staking-request/)
+- [Staking Response](https://apis.io/schemas/galaxy-com/galaxy-com-staking-response/)
+- [Validator Exit Request](https://apis.io/schemas/galaxy-com/galaxy-com-validator-exit-request/)
+- [Validator Info](https://apis.io/schemas/galaxy-com/galaxy-com-validator-info-response/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Galaxy Com Context](https://apis.io/jsonld/galaxy-com/galaxy-com-context/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Galaxy API Rules](https://apis.io/rules/galaxy-com/galaxy-com-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Galaxy Com Authentication](https://apis.io/security/galaxy-com/galaxy-com-authentication/)
+- [Galaxy Com Domain Security](https://apis.io/security/galaxy-com/galaxy-com-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Galaxy Com Plans Pricing](https://apis.io/plans/galaxy-com/galaxy-com-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Galaxy Com Rate Limits](https://apis.io/rate-limits/galaxy-com/galaxy-com-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.galaxy.com)
+- [Documentation](https://docs.staking.galaxy.com/)
+- [Getting started](https://www.galaxy.com/get-started)
+- [Blog](https://www.galaxy.com/insights)
+- [Terms of service](https://www.galaxy.com/terms/)
+- [Privacy policy](https://www.galaxy.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 42.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 58.3 |
+| Contract governance | 19.7 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 52.4 |
+| Access clarity | 34.2 |
+
+**Agent readiness 33.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 28.7** — Securities & Market Data
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/galaxy-com/](https://apis.io/providers/galaxy-com/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Galaxy: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/galaxy-com/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
